@@ -2,6 +2,7 @@
 interface Version {
   filename: string;
   label: string;
+  hash?: string;
 }
 
 interface Props {
@@ -27,7 +28,7 @@ const { versions, latest } = Astro.props;
       {versions.map((v, i) => (
         <li
           class={`version-item${v.filename === latest ? ' version-item--active' : ''}`}
-          data-url={`/resumes/${v.filename}`}
+          data-url={`/resumes/${v.filename}${v.hash ? `?v=${v.hash}` : ''}`}
           data-filename={v.filename}
           role="button"
           tabindex="0"

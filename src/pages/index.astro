@@ -20,7 +20,8 @@ try {
   // No versions yet
 }
 
-const pdfUrl = latest ? `/resumes/${latest}` : '';
+const latestHash = versions.find((v: any) => v.filename === latest)?.hash ?? '';
+const pdfUrl = latest ? `/resumes/${latest}${latestHash ? `?v=${latestHash}` : ''}` : '';
 ---
 
 <!doctype html>

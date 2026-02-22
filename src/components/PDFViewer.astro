@@ -387,7 +387,7 @@ const { pdfUrl } = Astro.props;
     btnDl.addEventListener('click', () => {
       const a = document.createElement('a');
       a.href     = currentUrl;
-      a.download = currentUrl.split('/').pop();
+      a.download = currentUrl.split('/').pop()?.split('?')[0] ?? 'resume.pdf';
       a.click();
     });
 
@@ -410,6 +410,17 @@ const { pdfUrl } = Astro.props;
         await renderPage(currentPage);
       }
     });
+
+    // ── Pinch / Ctrl+scroll zoom on the viewport ──
+    viewport.addEventListener('wheel', async (e) => {
+      if (!e.ctrlKey || !pdfDoc) return;
+      e.preventDefault();
+      userZoomed = true;
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      currentScale = Math.min(4, Math.max(0.25, currentScale + delta));
+      zoomPctEl.textContent = Math.round(currentScale * 100);
+      await renderPage(currentPage);
+    }, { passive: false });
 
     // ── Listen for version-switch events from VersionList ──
     window.addEventListener('load-version', async (e) => {

@@ -5,6 +5,7 @@ Naming conventions handled:
   JakobLangtryFeb26.pdf          → primary version for Feb 2026
   JakobLangtryFeb26-rev1.pdf     → older revision within the same month
 """
+import hashlib
 import os
 import json
 import re
@@ -35,11 +36,15 @@ for fname in sorted(os.listdir('public/resumes')):
     else:
         label = f"{mon} '{yr} rev {rev}"
 
-    entries.append({'filename': fname, 'label': label, 'sort_key': sort_key})
+    pdf_path = os.path.join('public/resumes', fname)
+    with open(pdf_path, 'rb') as pf:
+        content_hash = hashlib.md5(pf.read()).hexdigest()[:10]
+
+    entries.append({'filename': fname, 'label': label, 'sort_key': sort_key, 'hash': content_hash})
 
 # Newest first: highest sort_key first
 entries.sort(key=lambda x: x['sort_key'], reverse=True)
-versions = [{'filename': e['filename'], 'label': e['label']} for e in entries]
+versions = [{'filename': e['filename'], 'label': e['label'], 'hash': e['hash']} for e in entries]
 
 # Latest is the first primary (no -rev) entry
 latest = next(
