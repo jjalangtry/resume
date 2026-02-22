@@ -20,17 +20,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download Young Serif font
-        run: |
-          mkdir -p latex/fonts
-          curl -A "Mozilla/5.0" -fsSL \
-            "https://fonts.google.com/download?family=Young+Serif" \
-            -o /tmp/youngserif.zip
-          unzip -o /tmp/youngserif.zip -d /tmp/youngserif
-          find /tmp/youngserif -name "*.ttf" -exec cp {} latex/fonts/ \;
-          echo "Fonts downloaded:"
-          ls latex/fonts/
-
       - name: Compile LaTeX
         uses: xu-cheng/latex-action@v3
         with:
