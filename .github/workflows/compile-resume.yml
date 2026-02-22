@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "latex/**"
+  workflow_dispatch:
 
 permissions:
   contents: write
