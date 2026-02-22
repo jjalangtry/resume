@@ -46,10 +46,9 @@ const { versions, latest } = Astro.props;
   .version-panel {
     display: flex;
     flex-direction: column;
-    background: #0a0a0a;
-    border: 1px solid #00ff41;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.08);
-    font-family: 'Courier New', Courier, monospace;
+    background: #000;
+    border: 1px solid var(--dim, #3a4a3a);
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
     min-width: 0;
     height: 100%;
   }
@@ -58,21 +57,21 @@ const { versions, latest } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 12px;
-    border-bottom: 1px solid #00ff41;
+    padding: 5px 12px;
+    border-bottom: 1px solid var(--dim, #3a4a3a);
     flex-shrink: 0;
   }
 
   .panel-title {
-    color: #00ff41;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    color: var(--primary, #98c379);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
     text-transform: lowercase;
   }
 
   .panel-count {
-    color: #004d18;
-    font-size: 0.75rem;
+    color: var(--muted, #5a6a5a);
+    font-size: 0.72rem;
   }
 
   .no-versions {
@@ -81,9 +80,9 @@ const { versions, latest } = Astro.props;
     justify-content: center;
     flex: 1;
     padding: 20px;
-    color: #004d18;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
+    color: var(--muted, #5a6a5a);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
   }
 
   .version-list {
@@ -93,61 +92,59 @@ const { versions, latest } = Astro.props;
     overflow-y: auto;
     flex: 1;
     scrollbar-width: thin;
-    scrollbar-color: #004d18 #0a0a0a;
+    scrollbar-color: #3d3d3d #1a1a1a;
   }
 
   .version-list::-webkit-scrollbar { width: 4px; }
-  .version-list::-webkit-scrollbar-track { background: #0a0a0a; }
-  .version-list::-webkit-scrollbar-thumb { background: #004d18; }
-  .version-list::-webkit-scrollbar-thumb:hover { background: #00ff41; }
+  .version-list::-webkit-scrollbar-track { background: #1a1a1a; }
+  .version-list::-webkit-scrollbar-thumb { background: #3d3d3d; }
+  .version-list::-webkit-scrollbar-thumb:hover { background: var(--primary, #98c379); }
 
   .version-item {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 12px;
+    padding: 6px 12px;
     cursor: pointer;
-    color: #006622;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
+    color: var(--muted, #5a6a5a);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
     border-left: 2px solid transparent;
     transition: color 0.12s, border-color 0.12s, background 0.12s;
     user-select: none;
   }
 
   .version-item:hover {
-    color: #00ff41;
-    background: rgba(0, 255, 65, 0.05);
-    border-left-color: #004d18;
+    color: var(--primary, #98c379);
+    background: rgba(152, 195, 121, 0.06);
+    border-left-color: var(--dim, #3a4a3a);
   }
 
   .version-item:focus-visible {
-    outline: 1px dashed #00ff41;
+    outline: 1px dashed var(--primary, #98c379);
     outline-offset: -2px;
   }
 
   .version-item--active {
-    color: #00ff41;
-    border-left-color: #00ff41;
-    background: rgba(0, 255, 65, 0.04);
+    color: var(--primary, #98c379);
+    border-left-color: var(--primary, #98c379);
+    background: rgba(152, 195, 121, 0.05);
   }
 
   .version-prefix {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     width: 10px;
     flex-shrink: 0;
-    color: #00ff41;
+    color: var(--primary, #98c379);
   }
 
-  .version-label {
-    flex: 1;
-  }
+  .version-label { flex: 1; }
 
   .version-badge {
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    color: #0a0a0a;
-    background: #00ff41;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: #000;
+    background: var(--primary, #98c379);
     padding: 1px 4px;
     flex-shrink: 0;
   }

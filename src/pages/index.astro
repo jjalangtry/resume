@@ -5,7 +5,6 @@ import { join, dirname } from 'node:path';
 import PDFViewer from '../components/PDFViewer.astro';
 import VersionList from '../components/VersionList.astro';
 
-// Load versions manifest at build time from filesystem
 let versions = [];
 let latest = '';
 
@@ -18,7 +17,7 @@ try {
   versions = manifest.versions ?? [];
   latest   = manifest.latest ?? '';
 } catch {
-  // No versions yet — empty state is shown
+  // No versions yet
 }
 
 const pdfUrl = latest ? `/resumes/${latest}` : '';
@@ -32,56 +31,51 @@ const pdfUrl = latest ? `/resumes/${latest}` : '';
     <meta name="description" content="Jakob Langtry's resume" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Jakob Langtry — Resume</title>
-
-    <!-- Terminal font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
 
   <body>
     <div class="shell">
-      <!-- Header bar -->
-      <header class="header">
-        <div class="header-left">
-          <span class="header-prompt">jakob@langtry</span>
-          <span class="header-sep">:</span>
-          <span class="header-path">~/resume</span>
-          <span class="header-cursor" aria-hidden="true">█</span>
+
+      <!-- ── Terminal command bar ── -->
+      <header class="header" id="header">
+        <div class="prompt-line" id="prompt-line">
+          <span class="p-user">jakob@langtry</span><span class="p-sep">:</span><span class="p-path">~/resume</span><span class="p-dollar">$</span>
+          <div class="input-wrap">
+            <input
+              type="text"
+              id="cmd-input"
+              class="cmd-input"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label="terminal command input"
+            />
+            <span class="terminal-cursor" id="terminal-cursor" aria-hidden="true"></span>
+          </div>
         </div>
-        <div class="header-right">
-          <a
-            href={pdfUrl || '#'}
-            download={latest || undefined}
-            class={`header-link${!pdfUrl ? ' disabled' : ''}`}
-            aria-disabled={!pdfUrl}
-          >
-            download cv
-          </a>
-        </div>
+        <div class="cmd-output" id="cmd-output" aria-live="polite"></div>
       </header>
 
-      <!-- Main layout -->
+      <!-- ── Main layout ── -->
       <main class="main">
-        <!-- Sidebar: version history -->
         <aside class="sidebar">
           <VersionList versions={versions} latest={latest} />
         </aside>
-
-        <!-- Primary: PDF viewer -->
         <section class="viewer">
           <PDFViewer pdfUrl={pdfUrl} />
         </section>
       </main>
 
-      <!-- Footer -->
+      <!-- ── Footer ── -->
       <footer class="footer">
-        <span class="footer-hint">
-          keys: ← → page nav &nbsp;|&nbsp; +/- zoom &nbsp;|&nbsp; built with astro + pdf.js
-        </span>
+        <span class="footer-hint"><kbd>exit</kbd> / <kbd>cd ..</kbd> / <kbd>ctrl+c</kbd> → jjalangtry.com &nbsp;·&nbsp; <kbd>←</kbd><kbd>→</kbd> pages &nbsp;·&nbsp; <kbd>+</kbd><kbd>-</kbd> zoom</span>
         <span class="footer-url">resume.jjalangtry.com</span>
       </footer>
     </div>
@@ -89,12 +83,24 @@ const pdfUrl = latest ? `/resumes/${latest}` : '';
 </html>
 
 <style is:global>
+  :root {
+    --bg:          #000000;
+    --primary:     #98c379;
+    --prompt:      #d19a66;
+    --info:        #61afef;
+    --dim:         #3a4a3a;
+    --dimmer:      #1e281e;
+    --muted:       #5a6a5a;
+    --scrollbar-track: #1a1a1a;
+    --scrollbar-thumb: #3d3d3d;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
     height: 100%;
-    background: #060606;
-    color: #00ff41;
+    background: var(--bg);
+    color: var(--primary);
     font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
     overflow: hidden;
   }
@@ -107,62 +113,83 @@ const pdfUrl = latest ? `/resumes/${latest}` : '';
     max-height: 100dvh;
   }
 
-  /* ── Header ── */
+  /* ── Header / command bar ── */
   .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 20px;
-    border-bottom: 1px solid #004d18;
-    background: #060606;
     flex-shrink: 0;
-    gap: 8px;
+    border-bottom: 1px solid var(--dim);
+    background: var(--bg);
+    padding: 0 16px;
+    cursor: text;
   }
 
-  .header-left {
+  .prompt-line {
     display: flex;
     align-items: center;
     gap: 0;
+    padding: 7px 0;
     font-size: 0.85rem;
   }
 
-  .header-prompt { color: #00ff41; }
-  .header-sep    { color: #004d18; }
-  .header-path   { color: #006622; }
+  .p-user   { color: var(--primary); }
+  .p-sep    { color: var(--dim); }
+  .p-path   { color: var(--info); }
+  .p-dollar { color: var(--prompt); margin: 0 6px; }
 
-  .header-cursor {
-    color: #00ff41;
-    margin-left: 2px;
-    animation: cursor-blink 1s step-end infinite;
+  .input-wrap {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
 
-  @keyframes cursor-blink {
+  .cmd-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: inherit;
+    caret-color: transparent;
+    width: 100%;
+    letter-spacing: 0.02em;
+  }
+
+  .terminal-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: var(--primary);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: cur-blink 1s step-end infinite;
+    pointer-events: none;
+  }
+
+  .terminal-cursor.hidden { display: none; }
+
+  @keyframes cur-blink {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
   }
 
-  .header-right { display: flex; align-items: center; gap: 12px; }
-
-  .header-link {
-    color: #006622;
-    text-decoration: none;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    border: 1px solid #004d18;
-    padding: 3px 10px;
-    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  .cmd-output {
+    font-size: 0.78rem;
+    padding-bottom: 5px;
+    min-height: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.15s ease;
   }
 
-  .header-link:hover {
-    color: #00ff41;
-    border-color: #00ff41;
-    background: rgba(0, 255, 65, 0.05);
+  .cmd-output.visible {
+    max-height: 60px;
   }
 
-  .header-link.disabled {
-    pointer-events: none;
-    opacity: 0.3;
-  }
+  .cmd-output .out-error   { color: #e06c75; }
+  .cmd-output .out-info    { color: var(--info); }
+  .cmd-output .out-success { color: var(--primary); }
+  .cmd-output .out-warn    { color: #e5c07b; }
 
   /* ── Main layout ── */
   .main {
@@ -170,46 +197,54 @@ const pdfUrl = latest ? `/resumes/${latest}` : '';
     grid-template-columns: 160px 1fr;
     flex: 1;
     min-height: 0;
-    gap: 12px;
-    padding: 12px;
+    gap: 10px;
+    padding: 10px;
   }
 
-  .sidebar {
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .viewer {
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
+  .sidebar { min-height: 0; display: flex; flex-direction: column; }
+  .viewer  { min-height: 0; display: flex; flex-direction: column; }
 
   /* ── Footer ── */
   .footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 20px;
-    border-top: 1px solid #004d18;
-    background: #060606;
+    padding: 4px 16px;
+    border-top: 1px solid var(--dimmer);
+    background: var(--bg);
     flex-shrink: 0;
     flex-wrap: wrap;
     gap: 8px;
   }
 
   .footer-hint {
-    color: #003d10;
+    color: var(--muted);
     font-size: 0.65rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-hint kbd {
+    color: var(--primary);
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    opacity: 0.7;
   }
 
   .footer-url {
-    color: #004d18;
+    color: var(--muted);
     font-size: 0.65rem;
     letter-spacing: 0.08em;
   }
+
+  /* ── Scrollbars ── */
+  ::-webkit-scrollbar       { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
 
   /* ── Responsive ── */
   @media (max-width: 640px) {
@@ -218,12 +253,77 @@ const pdfUrl = latest ? `/resumes/${latest}` : '';
       grid-template-rows: auto 1fr;
       padding: 8px;
     }
-
-    .sidebar {
-      max-height: 120px;
-    }
-
+    .sidebar { max-height: 110px; }
     html, body { overflow: auto; }
     .shell { height: auto; min-height: 100vh; }
   }
 </style>
+
+<script>
+  const input   = document.getElementById('cmd-input') as HTMLInputElement;
+  const output  = document.getElementById('cmd-output') as HTMLElement;
+  const cursor  = document.getElementById('terminal-cursor') as HTMLElement;
+  const header  = document.getElementById('header') as HTMLElement;
+
+  // Focus input when clicking anywhere in the header
+  header.addEventListener('click', () => input.focus());
+  input.focus();
+
+  // Position the block cursor on top of where the next char will land
+  function updateCursor() {
+    // Measure text width using a canvas
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+    const style = getComputedStyle(input);
+    ctx.font = `${style.fontSize} ${style.fontFamily}`;
+    const w = ctx.measureText(input.value).width;
+    cursor.style.left = w + 'px';
+  }
+
+  input.addEventListener('input', updateCursor);
+  input.addEventListener('keydown', (e) => {
+    // Ctrl+C → go home
+    if (e.ctrlKey && e.key === 'c') {
+      e.preventDefault();
+      input.value += '^C';
+      updateCursor();
+      setTimeout(() => { window.location.href = 'https://jjalangtry.com'; }, 250);
+      return;
+    }
+
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+
+    const raw = input.value.trim();
+    const cmd = raw.toLowerCase();
+    input.value = '';
+    updateCursor();
+
+    runCommand(cmd);
+  });
+
+  // Hide cursor while input is blurred
+  input.addEventListener('blur',  () => cursor.classList.add('hidden'));
+  input.addEventListener('focus', () => cursor.classList.remove('hidden'));
+
+  function showOutput(html: string) {
+    output.innerHTML = html;
+    output.classList.add('visible');
+    clearTimeout((output as any)._timer);
+    (output as any)._timer = setTimeout(() => {
+      output.classList.remove('visible');
+    }, 4000);
+  }
+
+  const EXIT_CMDS = new Set(['exit', 'quit', 'q', 'cd ..', 'cd..', '..', 'back', ':q', ':q!', ':wq']);
+
+  function runCommand(cmd: string) {
+    if (!cmd) return;
+    if (EXIT_CMDS.has(cmd)) {
+      showOutput(`<span class="out-info">navigating to jjalangtry.com...</span>`);
+      setTimeout(() => { window.location.href = 'https://jjalangtry.com'; }, 400);
+    }
+  }
+
+  updateCursor();
+</script>

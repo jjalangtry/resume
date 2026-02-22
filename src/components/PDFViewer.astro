@@ -5,7 +5,7 @@ interface Props {
 const { pdfUrl } = Astro.props;
 ---
 
-<div class="viewer-shell" id="viewer-shell">
+<div class="viewer-shell" id="viewer-shell" data-pdf-url={pdfUrl}>
   <!-- Toolbar -->
   <div class="toolbar" id="toolbar">
     <div class="toolbar-left">
@@ -63,11 +63,10 @@ const { pdfUrl } = Astro.props;
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: #0a0a0a;
-    border: 1px solid #00ff41;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.15);
+    background: #000;
+    border: 1px solid var(--dim, #3a4a3a);
     overflow: hidden;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
   }
 
   /* ── Toolbar ── */
@@ -75,9 +74,9 @@ const { pdfUrl } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 14px;
-    border-bottom: 1px solid #00ff41;
-    background: #0a0a0a;
+    padding: 5px 12px;
+    border-bottom: 1px solid var(--dim, #3a4a3a);
+    background: #000;
     flex-shrink: 0;
     gap: 8px;
     flex-wrap: wrap;
@@ -92,80 +91,77 @@ const { pdfUrl } = Astro.props;
   }
 
   .prompt {
-    color: #00ff41;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    opacity: 0.8;
+    color: var(--info, #61afef);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
   }
 
   .toolbar-sep {
-    color: #004d18;
+    color: var(--dim, #3a4a3a);
     user-select: none;
   }
 
   .btn {
     background: transparent;
-    border: 1px solid #00ff41;
-    color: #00ff41;
+    border: 1px solid var(--dim, #3a4a3a);
+    color: var(--primary, #98c379);
     font-family: inherit;
-    font-size: 0.75rem;
-    padding: 3px 8px;
+    font-size: 0.72rem;
+    padding: 2px 7px;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    letter-spacing: 0.05em;
-    min-width: 26px;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    letter-spacing: 0.04em;
+    min-width: 24px;
   }
 
   .btn:hover {
-    background: #00ff41;
-    color: #0a0a0a;
+    background: var(--primary, #98c379);
+    color: #000;
+    border-color: var(--primary, #98c379);
   }
 
   .btn:disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: default;
   }
 
   .btn:disabled:hover {
     background: transparent;
-    color: #00ff41;
+    color: var(--primary, #98c379);
+    border-color: var(--dim, #3a4a3a);
   }
 
-  .btn-fit {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-  }
+  .btn-fit { font-size: 0.62rem; letter-spacing: 0.08em; }
 
   .btn-dl {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    border-color: #00cc33;
-    color: #00cc33;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    border-color: var(--info, #61afef);
+    color: var(--info, #61afef);
   }
 
   .btn-dl:hover {
-    background: #00cc33;
-    color: #0a0a0a;
+    background: var(--info, #61afef);
+    color: #000;
   }
 
   .page-indicator {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: #00ff41;
-    font-size: 0.8rem;
-    min-width: 60px;
+    color: var(--primary, #98c379);
+    font-size: 0.78rem;
+    min-width: 58px;
     justify-content: center;
   }
 
-  .page-sep {
-    color: #004d18;
-  }
+  .page-sep { color: var(--dim, #3a4a3a); }
 
   .zoom-display {
-    color: #00ff41;
-    font-size: 0.8rem;
-    min-width: 42px;
+    color: var(--primary, #98c379);
+    font-size: 0.78rem;
+    min-width: 40px;
     text-align: center;
   }
 
@@ -181,8 +177,8 @@ const { pdfUrl } = Astro.props;
   }
 
   .loader-text {
-    color: #00ff41;
-    font-size: 0.85rem;
+    color: var(--primary, #98c379);
+    font-size: 0.82rem;
     letter-spacing: 0.1em;
     animation: blink 1s step-end infinite;
   }
@@ -195,16 +191,15 @@ const { pdfUrl } = Astro.props;
   .loader-bar {
     width: 200px;
     height: 2px;
-    background: #001a08;
-    border: 1px solid #004d18;
+    background: #1a1a1a;
+    border: 1px solid var(--dim, #3a4a3a);
   }
 
   .loader-fill {
     height: 100%;
-    background: #00ff41;
+    background: var(--primary, #98c379);
     width: 0%;
     transition: width 0.3s ease;
-    box-shadow: 0 0 6px #00ff41;
   }
 
   /* ── Empty state ── */
@@ -217,11 +212,11 @@ const { pdfUrl } = Astro.props;
   }
 
   .ascii-box {
-    color: #00ff41;
-    font-size: 0.8rem;
+    color: var(--primary, #98c379);
+    font-size: 0.78rem;
     line-height: 1.5;
     margin: 0;
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   /* ── Canvas viewport ── */
@@ -231,22 +226,14 @@ const { pdfUrl } = Astro.props;
     display: none;
     align-items: flex-start;
     justify-content: center;
-    padding: 24px 16px;
-    background: #050505;
-    scrollbar-width: thin;
-    scrollbar-color: #004d18 #0a0a0a;
+    padding: 20px 14px;
+    background: #0a0a0a;
   }
-
-  .canvas-viewport::-webkit-scrollbar { width: 8px; height: 8px; }
-  .canvas-viewport::-webkit-scrollbar-track { background: #0a0a0a; }
-  .canvas-viewport::-webkit-scrollbar-thumb { background: #004d18; border-radius: 2px; }
-  .canvas-viewport::-webkit-scrollbar-thumb:hover { background: #00ff41; }
 
   .page-container {
     position: relative;
     display: inline-block;
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.08);
-    border: 1px solid #001a08;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
   }
 
   #pdf-canvas {
@@ -273,7 +260,7 @@ const { pdfUrl } = Astro.props;
   }
 
   .text-layer ::selection {
-    background: rgba(0, 255, 65, 0.3);
+    background: rgba(152, 195, 121, 0.35);
   }
 
   /* ── Scanlines ── */
@@ -284,16 +271,21 @@ const { pdfUrl } = Astro.props;
       to bottom,
       transparent 0px,
       transparent 3px,
-      rgba(0, 0, 0, 0.06) 3px,
-      rgba(0, 0, 0, 0.06) 4px
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 4px
     );
     pointer-events: none;
     z-index: 5;
   }
 </style>
 
-<script define:vars={{ pdfUrl }}>
+<script>
+  import { GlobalWorkerOptions, getDocument, TextLayer } from 'pdfjs-dist';
+
+  GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
   (async () => {
+    const shell       = document.getElementById('viewer-shell');
     const loaderEl    = document.getElementById('loader');
     const loaderFill  = document.getElementById('loader-fill');
     const loaderText  = document.getElementById('loader-text');
@@ -314,12 +306,8 @@ const { pdfUrl } = Astro.props;
     let pdfDoc       = null;
     let currentPage  = 1;
     let currentScale = 1.5;
-    let currentUrl   = pdfUrl;
+    let currentUrl   = shell.dataset.pdfUrl ?? '';
     let rendering    = false;
-
-    // ── Worker setup ──
-    const { GlobalWorkerOptions, getDocument, renderTextLayer } = await import('pdfjs-dist');
-    GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
     // ── Render a page ──
     async function renderPage(pageNum) {
@@ -339,12 +327,12 @@ const { pdfUrl } = Astro.props;
       await page.render({ canvasContext: ctx, viewport }).promise;
 
       // Text layer for selection
-      const textContent = await page.getTextContent();
-      renderTextLayer({
-        textContentSource: textContent,
+      const tl = new TextLayer({
+        textContentSource: page.streamTextContent(),
         container: textLayer,
         viewport,
       });
+      await tl.render();
 
       pageNumEl.textContent = pageNum;
       btnPrev.disabled = pageNum <= 1;
