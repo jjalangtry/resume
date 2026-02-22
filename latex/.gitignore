@@ -1,3 +1,6 @@
+# Downloaded fonts (fetched by CI)
+fonts/
+
 # LaTeX compilation artifacts — keep sources, ignore build output
 *.aux
 *.log
