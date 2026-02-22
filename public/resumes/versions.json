@@ -1,4 +1,9 @@
 {
-  "latest": "",
-  "versions": []
+  "latest": "JakobLangtryFeb26.pdf",
+  "versions": [
+    {
+      "filename": "JakobLangtryFeb26.pdf",
+      "label": "Feb '26"
+    }
+  ]
 }
