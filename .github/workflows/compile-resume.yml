@@ -31,6 +31,11 @@ jobs:
           args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
           extra_fonts: ./fonts/*.ttf
 
+      - name: Generate OG preview image
+        run: |
+          sudo apt-get install -y --no-install-recommends poppler-utils
+          pdftoppm -png -f 1 -l 1 -r 200 -singlefile latex/resume.pdf public/og-preview
+
       - name: Store PDF and update versions manifest
         run: |
           set -euo pipefail
@@ -69,7 +74,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/resumes/
+          git add public/resumes/ public/og-preview.png
           git diff --staged --quiet && echo "No changes to commit." && exit 0
           git commit -m "resume: $(date +'%b %Y')"
           git push
