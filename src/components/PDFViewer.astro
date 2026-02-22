@@ -286,19 +286,24 @@ const { pdfUrl } = Astro.props;
     let rendering    = false;
     let initializing = false;  // guard against ResizeObserver firing during load
 
-    // ── Render a page ──
+    // ── Render a page at high DPI ──
     async function renderPage(pageNum) {
       if (!pdfDoc || rendering) return;
       rendering = true;
 
       const page     = await pdfDoc.getPage(pageNum);
-      const viewport = page.getViewport({ scale: currentScale });
+      const dpr      = window.devicePixelRatio || 1;
+      const vp       = page.getViewport({ scale: currentScale });
       const ctx      = canvas.getContext('2d');
 
-      canvas.width  = viewport.width;
-      canvas.height = viewport.height;
+      // Render at native device resolution, display at logical size
+      canvas.width  = Math.floor(vp.width  * dpr);
+      canvas.height = Math.floor(vp.height * dpr);
+      canvas.style.width  = Math.floor(vp.width)  + 'px';
+      canvas.style.height = Math.floor(vp.height) + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      await page.render({ canvasContext: ctx, viewport }).promise;
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
 
       pageNumEl.textContent = pageNum;
       btnPrev.disabled = pageNum <= 1;
