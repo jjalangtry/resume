@@ -1,43 +1,63 @@
-# Astro Starter Kit: Minimal
+# resume.jjalangtry.com
 
-```sh
-pnpm create astro@latest -- --template minimal
+Terminal-aesthetic resume hosting site. Edit one file, push, done.
+
+---
+
+## Workflow
+
+```
+edit latex/resume.tex  →  git push  →  CI compiles  →  git pull
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+1. Edit `latex/resume.tex`
+2. `git add latex/resume.tex && git commit -m "update resume" && git push`
+3. GitHub Actions compiles it with XeLaTeX, names it `JakobLangtry{Mon}{YY}.pdf`,
+   commits it to `public/resumes/`, and updates `versions.json`
+4. Railway auto-redeploys — site is live
+5. `git pull` to get the compiled PDF locally if you want it
 
-## 🚀 Project Structure
+> Pushing the same month twice just overwrites that month's PDF (same filename).
+> Each new month automatically creates a new entry in the version history.
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+## Local Preview (before pushing)
+
+Requires MacTeX: `brew install --cask mactex-no-gui`
+
+```bash
+cd latex
+make open      # compile + open PDF
+make watch     # auto-recompile on save
+make clean     # remove build artifacts
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Project Layout
 
-Any static assets, like images, can be placed in the `public/` directory.
+```
+latex/
+  resume.tex         ← the one file you edit
+  archive/           ← manually drop old .tex versions here if you want
+  Makefile           ← local compile shortcuts
 
-## 🧞 Commands
+public/
+  resumes/
+    versions.json    ← auto-maintained by CI
+    JakobLangtryFeb26.pdf
+    ...
 
-All commands are run from the root of the project, from a terminal:
+src/                 ← Astro site source
+.github/workflows/
+  compile-resume.yml ← the automation
+railway.toml
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## Deployment
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Deployed on Railway via `pnpm build` (Astro static) + `sirv` static server.
+Custom domain: `resume.jjalangtry.com`

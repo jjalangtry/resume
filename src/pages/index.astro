@@ -1,17 +1,229 @@
 ---
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { join, dirname } from 'node:path';
+import PDFViewer from '../components/PDFViewer.astro';
+import VersionList from '../components/VersionList.astro';
 
+// Load versions manifest at build time from filesystem
+let versions = [];
+let latest = '';
+
+try {
+  const manifestPath = join(
+    dirname(fileURLToPath(import.meta.url)),
+    '../../public/resumes/versions.json'
+  );
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+  versions = manifest.versions ?? [];
+  latest   = manifest.latest ?? '';
+} catch {
+  // No versions yet — empty state is shown
+}
+
+const pdfUrl = latest ? `/resumes/${latest}` : '';
 ---
 
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Jakob Langtry's resume" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Jakob Langtry — Resume</title>
+
+    <!-- Terminal font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="shell">
+      <!-- Header bar -->
+      <header class="header">
+        <div class="header-left">
+          <span class="header-prompt">jakob@langtry</span>
+          <span class="header-sep">:</span>
+          <span class="header-path">~/resume</span>
+          <span class="header-cursor" aria-hidden="true">█</span>
+        </div>
+        <div class="header-right">
+          <a
+            href={pdfUrl || '#'}
+            download={latest || undefined}
+            class={`header-link${!pdfUrl ? ' disabled' : ''}`}
+            aria-disabled={!pdfUrl}
+          >
+            download cv
+          </a>
+        </div>
+      </header>
+
+      <!-- Main layout -->
+      <main class="main">
+        <!-- Sidebar: version history -->
+        <aside class="sidebar">
+          <VersionList versions={versions} latest={latest} />
+        </aside>
+
+        <!-- Primary: PDF viewer -->
+        <section class="viewer">
+          <PDFViewer pdfUrl={pdfUrl} />
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span class="footer-hint">
+          keys: ← → page nav &nbsp;|&nbsp; +/- zoom &nbsp;|&nbsp; built with astro + pdf.js
+        </span>
+        <span class="footer-url">resume.jjalangtry.com</span>
+      </footer>
+    </div>
+  </body>
 </html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: #060606;
+    color: #00ff41;
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    overflow: hidden;
+  }
+
+  /* ── Shell ── */
+  .shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100dvh;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    border-bottom: 1px solid #004d18;
+    background: #060606;
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: 0.85rem;
+  }
+
+  .header-prompt { color: #00ff41; }
+  .header-sep    { color: #004d18; }
+  .header-path   { color: #006622; }
+
+  .header-cursor {
+    color: #00ff41;
+    margin-left: 2px;
+    animation: cursor-blink 1s step-end infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  .header-right { display: flex; align-items: center; gap: 12px; }
+
+  .header-link {
+    color: #006622;
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    border: 1px solid #004d18;
+    padding: 3px 10px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+
+  .header-link:hover {
+    color: #00ff41;
+    border-color: #00ff41;
+    background: rgba(0, 255, 65, 0.05);
+  }
+
+  .header-link.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  /* ── Main layout ── */
+  .main {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    flex: 1;
+    min-height: 0;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .sidebar {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .viewer {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 20px;
+    border-top: 1px solid #004d18;
+    background: #060606;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-hint {
+    color: #003d10;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-url {
+    color: #004d18;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .main {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      padding: 8px;
+    }
+
+    .sidebar {
+      max-height: 120px;
+    }
+
+    html, body { overflow: auto; }
+    .shell { height: auto; min-height: 100vh; }
+  }
+</style>

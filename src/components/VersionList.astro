@@ -1,0 +1,182 @@
+---
+interface Version {
+  filename: string;
+  label: string;
+}
+
+interface Props {
+  versions: Version[];
+  latest: string;
+}
+
+const { versions, latest } = Astro.props;
+---
+
+<aside class="version-panel">
+  <div class="panel-header">
+    <span class="panel-title">version history</span>
+    <span class="panel-count">[{versions.length}]</span>
+  </div>
+
+  {versions.length === 0 ? (
+    <div class="no-versions">
+      <span>no versions yet</span>
+    </div>
+  ) : (
+    <ul class="version-list">
+      {versions.map((v, i) => (
+        <li
+          class={`version-item${v.filename === latest ? ' version-item--active' : ''}`}
+          data-url={`/resumes/${v.filename}`}
+          data-filename={v.filename}
+          role="button"
+          tabindex="0"
+          title={v.filename}
+        >
+          <span class="version-prefix">{i === 0 ? '▶' : ' '}</span>
+          <span class="version-label">{v.label}</span>
+          {i === 0 && <span class="version-badge">latest</span>}
+        </li>
+      ))}
+    </ul>
+  )}
+</aside>
+
+<style>
+  .version-panel {
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0a;
+    border: 1px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.08);
+    font-family: 'Courier New', Courier, monospace;
+    min-width: 0;
+    height: 100%;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-bottom: 1px solid #00ff41;
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    color: #00ff41;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
+  }
+
+  .panel-count {
+    color: #004d18;
+    font-size: 0.75rem;
+  }
+
+  .no-versions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 20px;
+    color: #004d18;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .version-list {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #004d18 #0a0a0a;
+  }
+
+  .version-list::-webkit-scrollbar { width: 4px; }
+  .version-list::-webkit-scrollbar-track { background: #0a0a0a; }
+  .version-list::-webkit-scrollbar-thumb { background: #004d18; }
+  .version-list::-webkit-scrollbar-thumb:hover { background: #00ff41; }
+
+  .version-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    cursor: pointer;
+    color: #006622;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    border-left: 2px solid transparent;
+    transition: color 0.12s, border-color 0.12s, background 0.12s;
+    user-select: none;
+  }
+
+  .version-item:hover {
+    color: #00ff41;
+    background: rgba(0, 255, 65, 0.05);
+    border-left-color: #004d18;
+  }
+
+  .version-item:focus-visible {
+    outline: 1px dashed #00ff41;
+    outline-offset: -2px;
+  }
+
+  .version-item--active {
+    color: #00ff41;
+    border-left-color: #00ff41;
+    background: rgba(0, 255, 65, 0.04);
+  }
+
+  .version-prefix {
+    font-size: 0.65rem;
+    width: 10px;
+    flex-shrink: 0;
+    color: #00ff41;
+  }
+
+  .version-label {
+    flex: 1;
+  }
+
+  .version-badge {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: #0a0a0a;
+    background: #00ff41;
+    padding: 1px 4px;
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.version-item').forEach((item) => {
+    const activate = () => {
+      const url = item.dataset.url;
+      if (!url) return;
+
+      // Update active state
+      document.querySelectorAll('.version-item').forEach((el) => {
+        el.classList.remove('version-item--active');
+        el.querySelector('.version-prefix').textContent = ' ';
+      });
+      item.classList.add('version-item--active');
+      item.querySelector('.version-prefix').textContent = '▶';
+
+      // Update toolbar prompt
+      const promptEl = document.querySelector('.prompt');
+      if (promptEl) promptEl.textContent = item.dataset.filename;
+
+      window.dispatchEvent(new CustomEvent('load-version', { detail: { url } }));
+    };
+
+    item.addEventListener('click', activate);
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+</script>
