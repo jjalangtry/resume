@@ -35,8 +35,18 @@ jobs:
           MONTH=$(date +'%b')
           YEAR=$(date +'%y')
           FILENAME="JakobLangtry${MONTH}${YEAR}.pdf"
+          BASE="JakobLangtry${MONTH}${YEAR}"
           mkdir -p public/resumes
-          echo "Copying latex/resume.pdf -> public/resumes/${FILENAME}"
+
+          # If a version for this month already exists, rotate it to -rev{n}
+          if [ -f "public/resumes/${FILENAME}" ]; then
+            REV_COUNT=$(ls public/resumes/ | grep -c "^${BASE}-rev" || true)
+            NEXT_REV=$((REV_COUNT + 1))
+            echo "Rotating existing ${FILENAME} -> ${BASE}-rev${NEXT_REV}.pdf"
+            mv "public/resumes/${FILENAME}" "public/resumes/${BASE}-rev${NEXT_REV}.pdf"
+          fi
+
+          echo "Saving latex/resume.pdf -> public/resumes/${FILENAME}"
           cp latex/resume.pdf "public/resumes/${FILENAME}"
           python3 .github/scripts/update_versions.py
 

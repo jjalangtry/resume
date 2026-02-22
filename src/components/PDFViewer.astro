@@ -370,13 +370,12 @@ const { pdfUrl } = Astro.props;
         loaderFill.style.width = '100%';
 
         pageCountEl.textContent = pdfDoc.numPages;
-        zoomPctEl.textContent   = Math.round(currentScale * 100);
 
-        // Auto fit-to-width on first load
-        await fitToWidth(false);
-
+        // Show viewport BEFORE fitToWidth so clientWidth is non-zero
         loaderEl.style.display  = 'none';
         viewport.style.display  = 'flex';
+
+        await fitToWidth(false);
         await renderPage(1);
       } catch (err) {
         loaderText.textContent = 'error loading pdf: ' + err.message;
