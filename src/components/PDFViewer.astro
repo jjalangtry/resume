@@ -224,7 +224,7 @@ const { pdfUrl } = Astro.props;
     flex: 1;
     overflow: auto;
     display: none;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     padding: 20px 14px;
     background: #0a0a0a;
@@ -241,26 +241,24 @@ const { pdfUrl } = Astro.props;
     background: #fff;
   }
 
-  /* ── Text layer (PDF.js) ── */
+  /* ── Text layer (PDF.js v5 applies inline styles, so !important is needed) ── */
   .text-layer {
     position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: auto;
     line-height: 1;
+    opacity: 1;
   }
 
-  .text-layer span,
-  .text-layer br {
-    color: transparent;
-    position: absolute;
-    white-space: pre;
-    cursor: text;
-    transform-origin: 0% 0%;
+  .text-layer * {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
   }
 
   .text-layer ::selection {
-    background: rgba(152, 195, 121, 0.35);
+    background: rgba(152, 195, 121, 0.35) !important;
+    color: transparent !important;
   }
 
   /* ── Scanlines ── */
@@ -378,7 +376,7 @@ const { pdfUrl } = Astro.props;
         loaderEl.style.display  = 'none';
         viewport.style.display  = 'flex';
 
-        await fitToWidth(false);
+        await fitToPage(false);
         await renderPage(1);
         initializing = false;
       } catch (err) {
@@ -388,13 +386,17 @@ const { pdfUrl } = Astro.props;
       }
     }
 
-    // ── Fit to width ──
-    async function fitToWidth(andRender = true) {
+    // ── Fit entire page on screen ──
+    async function fitToPage(andRender = true) {
       if (!pdfDoc) return;
       const page       = await pdfDoc.getPage(currentPage);
       const vp         = page.getViewport({ scale: 1 });
-      const containerW = document.getElementById('canvas-viewport').clientWidth - 64;
-      currentScale = containerW / vp.width;
+      const container  = document.getElementById('canvas-viewport');
+      const padW = 48, padH = 48;
+      const scaleW = (container.clientWidth  - padW) / vp.width;
+      const scaleH = (container.clientHeight - padH) / vp.height;
+      currentScale = Math.min(scaleW, scaleH);
+      if (currentScale <= 0) currentScale = 1;
       zoomPctEl.textContent = Math.round(currentScale * 100);
       if (andRender) await renderPage(currentPage);
     }
@@ -420,7 +422,7 @@ const { pdfUrl } = Astro.props;
       await renderPage(currentPage);
     });
 
-    btnFit.addEventListener('click', () => fitToWidth());
+    btnFit.addEventListener('click', () => fitToPage());
 
     btnDl.addEventListener('click', () => {
       const a = document.createElement('a');
@@ -453,7 +455,7 @@ const { pdfUrl } = Astro.props;
     });
 
     // ── Resize: re-fit (skip during initial load to avoid double-render) ──
-    const ro = new ResizeObserver(() => { if (pdfDoc && !initializing) fitToWidth(); });
+    const ro = new ResizeObserver(() => { if (pdfDoc && !initializing) fitToPage(); });
     ro.observe(document.getElementById('canvas-viewport'));
 
     // ── Initial load ──

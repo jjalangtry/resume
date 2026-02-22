@@ -30,25 +30,38 @@ jobs:
           args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
           extra_fonts: ./fonts/*.ttf
 
-      - name: Name, store, and update versions manifest
+      - name: Store PDF and update versions manifest
         run: |
           set -euo pipefail
-          MONTH=$(date +'%b')
-          YEAR=$(date +'%y')
-          FILENAME="JakobLangtry${MONTH}${YEAR}.pdf"
-          BASE="JakobLangtry${MONTH}${YEAR}"
           mkdir -p public/resumes
 
-          # If a version for this month already exists, rotate it to -rev{n}
-          if [ -f "public/resumes/${FILENAME}" ]; then
-            REV_COUNT=$(ls public/resumes/ | grep -c "^${BASE}-rev" || true)
-            NEXT_REV=$((REV_COUNT + 1))
-            echo "Rotating existing ${FILENAME} -> ${BASE}-rev${NEXT_REV}.pdf"
-            mv "public/resumes/${FILENAME}" "public/resumes/${BASE}-rev${NEXT_REV}.pdf"
+          MONTH=$(date +'%b')
+          YEAR=$(date +'%y')
+          CLEAN="JakobLangtry${MONTH}${YEAR}.pdf"
+
+          echo "=== Before rotation ==="
+          ls -la public/resumes/ || true
+
+          # If the clean-name file already exists, demote it to the next rev number
+          if [ -f "public/resumes/${CLEAN}" ]; then
+            # Find highest existing rev number for this month
+            HIGHEST=0
+            for f in public/resumes/JakobLangtry${MONTH}${YEAR}-rev*.pdf; do
+              [ -f "$f" ] || continue
+              NUM=$(echo "$f" | grep -oP '(?<=-rev)\d+')
+              [ "$NUM" -gt "$HIGHEST" ] && HIGHEST=$NUM
+            done
+            NEXT=$((HIGHEST + 1))
+            echo "Demoting old ${CLEAN} -> JakobLangtry${MONTH}${YEAR}-rev${NEXT}.pdf"
+            mv "public/resumes/${CLEAN}" "public/resumes/JakobLangtry${MONTH}${YEAR}-rev${NEXT}.pdf"
           fi
 
-          echo "Saving latex/resume.pdf -> public/resumes/${FILENAME}"
-          cp latex/resume.pdf "public/resumes/${FILENAME}"
+          # Save newly compiled PDF as the clean name (= latest)
+          cp latex/resume.pdf "public/resumes/${CLEAN}"
+
+          echo "=== After rotation ==="
+          ls -la public/resumes/
+
           python3 .github/scripts/update_versions.py
 
       - name: Commit and push
