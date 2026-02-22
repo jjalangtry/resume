@@ -8,12 +8,9 @@
 \usepackage{fontspec}
 \usepackage{microtype}
 
-% Fonts: Playfair Display for headers, Helvetica Neue / Open Sans for body
+% Fonts: Young Serif for headers/name, TeX Gyre Heros for body
 \setmainfont{TeX Gyre Heros}[Scale=0.95]
-\newfontfamily\playfair{Playfair Display}[
-  BoldFont = Playfair Display Bold,
-  ItalicFont = Playfair Display Italic
-]
+\newfontfamily\youngserif{Young Serif}
 
 % Color palette
 \definecolor{Accent}{HTML}{12355B}
@@ -33,9 +30,9 @@
 \raggedbottom
 \color{Body}
 
-% Section formatting — Playfair Display serif
+% Section formatting — Young Serif
 \titleformat{\section}
-  {\playfair\bfseries\large\color{Accent}}
+  {\youngserif\bfseries\large\color{Accent}}
   {}{0em}{}
   [{\color{Accent}\titlerule}]
 \titlespacing{\section}{0pt}{3pt}{2pt}
@@ -71,7 +68,7 @@
 \fontsize{9.8}{11.15}\selectfont
 
 \begin{minipage}[b]{0.38\linewidth}
-{\playfair\fontsize{24}{26}\selectfont\bfseries\color{Accent} JAKOB LANGTRY}
+{\youngserif\fontsize{24}{26}\selectfont\bfseries\color{Accent} JAKOB LANGTRY}
 \end{minipage}%
 \hfill
 \begin{minipage}[b]{0.60\linewidth}

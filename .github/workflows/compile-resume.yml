@@ -27,6 +27,13 @@ jobs:
           working_directory: latex
           latexmk_use_xelatex: true
           args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
+          pre_compile: |
+            apk add --no-cache wget unzip fontconfig
+            wget -q "https://fonts.google.com/download?family=Young+Serif" -O /tmp/youngserif.zip
+            unzip -o /tmp/youngserif.zip -d /tmp/youngserif
+            mkdir -p /usr/local/share/fonts/youngserif
+            cp /tmp/youngserif/*.ttf /usr/local/share/fonts/youngserif/
+            fc-cache -fv
 
       - name: Name, store, and update versions manifest
         run: |
