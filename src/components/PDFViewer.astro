@@ -49,7 +49,6 @@ const { pdfUrl } = Astro.props;
   <div class="canvas-viewport" id="canvas-viewport">
     <div class="page-container" id="page-container">
       <canvas id="pdf-canvas"></canvas>
-      <div class="text-layer" id="text-layer"></div>
     </div>
   </div>
 
@@ -241,26 +240,6 @@ const { pdfUrl } = Astro.props;
     background: #fff;
   }
 
-  /* ── Text layer (PDF.js v5 applies inline styles, so !important is needed) ── */
-  .text-layer {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: auto;
-    line-height: 1;
-    opacity: 1;
-  }
-
-  .text-layer * {
-    color: transparent !important;
-    -webkit-text-fill-color: transparent !important;
-  }
-
-  .text-layer ::selection {
-    background: rgba(152, 195, 121, 0.35) !important;
-    color: transparent !important;
-  }
-
   /* ── Scanlines ── */
   .scanlines {
     position: absolute;
@@ -278,7 +257,7 @@ const { pdfUrl } = Astro.props;
 </style>
 
 <script>
-  import { GlobalWorkerOptions, getDocument, TextLayer } from 'pdfjs-dist';
+  import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist';
 
   GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
@@ -290,7 +269,6 @@ const { pdfUrl } = Astro.props;
     const emptyEl     = document.getElementById('empty-state');
     const viewport    = document.getElementById('canvas-viewport');
     const canvas      = document.getElementById('pdf-canvas');
-    const textLayer   = document.getElementById('text-layer');
     const pageNumEl   = document.getElementById('page-num');
     const pageCountEl = document.getElementById('page-count');
     const zoomPctEl   = document.getElementById('zoom-pct');
@@ -319,19 +297,8 @@ const { pdfUrl } = Astro.props;
 
       canvas.width  = viewport.width;
       canvas.height = viewport.height;
-      textLayer.style.width  = viewport.width + 'px';
-      textLayer.style.height = viewport.height + 'px';
-      textLayer.innerHTML    = '';
 
       await page.render({ canvasContext: ctx, viewport }).promise;
-
-      // Text layer for selection
-      const tl = new TextLayer({
-        textContentSource: page.streamTextContent(),
-        container: textLayer,
-        viewport,
-      });
-      await tl.render();
 
       pageNumEl.textContent = pageNum;
       btnPrev.disabled = pageNum <= 1;
