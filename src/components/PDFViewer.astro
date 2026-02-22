@@ -308,6 +308,7 @@ const { pdfUrl } = Astro.props;
     let currentScale = 1.5;
     let currentUrl   = shell.dataset.pdfUrl ?? '';
     let rendering    = false;
+    let initializing = false;  // guard against ResizeObserver firing during load
 
     // ── Render a page ──
     async function renderPage(pageNum) {
@@ -371,12 +372,15 @@ const { pdfUrl } = Astro.props;
 
         pageCountEl.textContent = pdfDoc.numPages;
 
-        // Show viewport BEFORE fitToWidth so clientWidth is non-zero
+        // Show viewport BEFORE fitToWidth so clientWidth is non-zero.
+        // Guard initializing so the ResizeObserver doesn't trigger a second render.
+        initializing = true;
         loaderEl.style.display  = 'none';
         viewport.style.display  = 'flex';
 
         await fitToWidth(false);
         await renderPage(1);
+        initializing = false;
       } catch (err) {
         loaderText.textContent = 'error loading pdf: ' + err.message;
         loaderFill.style.width = '0%';
@@ -448,8 +452,8 @@ const { pdfUrl } = Astro.props;
       await loadPdf(e.detail.url);
     });
 
-    // ── Resize: re-fit ──
-    const ro = new ResizeObserver(() => { if (pdfDoc) fitToWidth(); });
+    // ── Resize: re-fit (skip during initial load to avoid double-render) ──
+    const ro = new ResizeObserver(() => { if (pdfDoc && !initializing) fitToWidth(); });
     ro.observe(document.getElementById('canvas-viewport'));
 
     // ── Initial load ──
