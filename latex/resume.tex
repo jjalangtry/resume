@@ -8,12 +8,23 @@
 \usepackage{fontspec}
 \usepackage{microtype}
 
-% Fonts: Young Serif for display, Times New Roman for body (TeX Gyre Termes fallback)
+% Fonts: Times New Roman for body, Young Serif for name
 \defaultfontfeatures{Ligatures=TeX}
 \IfFontExistsTF{Times New Roman}
   {\setmainfont{Times New Roman}[Scale=0.98]}
   {\setmainfont{TeX Gyre Termes}[Scale=1.0]}
-\newfontfamily\youngserif{YoungSerif-Regular.ttf}[Path=./fonts/]
+\newfontfamily\youngserif{YoungSerif-Regular.ttf}[
+  Path=./fonts/,
+  BoldFont=YoungSerif-Bold.ttf,
+  ItalicFont=YoungSerif-RegularItalic.ttf,
+  BoldItalicFont=YoungSerif-BoldItalic.ttf
+]
+\newfontfamily\youngseriflight{YoungSerif-Light.ttf}[
+  Path=./fonts/,
+  BoldFont=YoungSerif-Regular.ttf,
+  ItalicFont=YoungSerif-LightItalic.ttf,
+  BoldItalicFont=YoungSerif-RegularItalic.ttf
+]
 
 % Color palettes
 \definecolor{Accent}{HTML}{4A7C3F}
@@ -55,49 +66,51 @@
 % No page numbers
 \pagenumbering{gobble}
 
-% Role headings use Young Serif italic
-\newcommand{\Role}[1]{{\youngserif\textit{#1}}}
+% Role headings: Young Serif bold
+\newcommand{\Role}[1]{{\youngserif\bfseries #1}}
 \newcommand{\EntryGap}{\vspace{2pt}}
 
-% Pipe + italic meta formatting — Young Serif italic
-\newcommand{\Meta}[1]{{\youngserif\textbar{}\ \textit{\color{Slate}#1}}}
-\newcommand{\Date}[1]{{\youngserif\textit{#1}}}
-\newcommand{\Tech}[1]{{\sffamily\itshape Technologies:} {\sffamily #1}}
-\newcommand{\Action}[1]{{\sffamily\color{Accent}#1}}
-\newcommand{\Narrative}[1]{{\sffamily\color{Body}#1}}
+% Pipe + italic meta addendum: Young Serif italic
+\newcommand{\Meta}[1]{{\youngserif\textbar{}\ \itshape\color{Slate}#1}}
+\newcommand{\Date}[1]{{\textit{#1}}}
+\newcommand{\Tech}[1]{{\itshape Technologies:} #1}
+\newcommand{\Action}[1]{{\color{Accent}#1}}
+\newcommand{\Narrative}[1]{{\color{Body}#1}}
 
 \begin{document}
-\fontsize{9.8}{11.35}\selectfont
+\fontsize{9.4}{10.9}\selectfont
 
-\begin{minipage}[b]{0.47\linewidth}
-{\youngserif\fontsize{30}{32}\selectfont\bfseries\color{Accent} Jakob Langtry}
+\begin{minipage}[b]{0.40\linewidth}
+{\youngserif\fontsize{38}{40}\selectfont\bfseries\color{Accent} Jakob Langtry}
 \end{minipage}%
 \hfill
-\begin{minipage}[b]{0.51\linewidth}
+\begin{minipage}[b]{0.57\linewidth}
 \raggedleft
-{\small
-{\faEnvelope}\ \href{mailto:jjalangtry@gmail.com}{jjalangtry@gmail.com} \,|\,
-{\faPhone}\ (607) 731-5440 \\
-{\faGithub}\ \href{https://github.com/jjalangtry}{github.com/jjalangtry} \,|\,
-{\faLinkedinIn}\ \href{https://linkedin.com/in/jjalangtry}{linkedin.com/in/jjalangtry} \,|\,
-{\faGlobe}\ \href{https://jjalangtry.com}{jjalangtry.com}}
+{\youngseriflight\small\color{Body}
+{\color{Accent}\faEnvelope}\ \href{mailto:jjalangtry@gmail.com}{ jjalangtry@gmail.com} \,|\,
+{\color{Accent}\faPhone\ (607) 731-5440} \\
+{\color{Accent}\faGithub}\ \href{https://github.com/jjalangtry}{github.com/jjalangtry} \,|\,
+{\color{Accent}\faLinkedinIn}\ \href{https://linkedin.com/in/jjalangtry}{linkedin/jjalangtry} \,|\,
+{\color{Accent}\faGlobe}\ \href{https://jjalangtry.com}{jjalangtry.com}}
 \end{minipage}
 {\color{Accent}\rule{\linewidth}{0.8pt}}
 
+\vspace{2pt}
+{\youngseriflight\small\color{Slate} Full-stack software engineer with experience spanning web and embedded systems; dedicated to craft through personal and open-source projects, with leadership experience in being President of the RIT Society of Software Engineers.}
+\vspace{-1pt}
+
 \section*{Education}
-{\youngserif Rochester Institute of Technology} \Meta{B.S. Software Engineering} \hfill \Date{May 2026} \\
-{\youngserif Corning Community College} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
+{\youngserif\bfseries Rochester Institute of Technology} \Meta{B.S. Software Engineering} \hfill \Date{May 2026} \\
+{\youngserif\bfseries Corning Community College} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
 
 \section*{Experience}
 {\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 -- Present} \\
 \Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
-  \item \Action{Refactored user system (CQRS) in the admin portal;} \Narrative{eliminated manual database user creation.}
-  \item \Action{Built bulk upload tooling to import 10K+ row tab-delimited sheets;} \Narrative{migrated data into the new DB.}
+  \item \Action{Created user management page and refactored user system (CQRS) in the admin portal;} \Narrative{eliminated manual database user creation.}
   \item \Action{Added I/O virtualization;} \Narrative{reduced stream recovery to \textasciitilde{}30s of dead air from 5 minutes of stream loss; removed single-failure points.}
   \item \Action{Implemented Markdown descriptions app-wide;} \Narrative{editable and bulk-editable flows via custom \texttt{IDescribable}.}
-  \item \Action{Trusted with critical infrastructure across frontend, backend, and streaming;} \Narrative{fast-paced startup environment.}
-  \item \Action{Participated in code reviews;} \Narrative{found bugs, improved implementation quality, and suggested fixes.}
+  \item \Action{Operated across frontend, backend, and streaming in a fast-paced startup environment.}
 \end{itemize}
 \EntryGap
 
@@ -107,7 +120,6 @@
   \item \Action{Enabled breakout mode for QSFP NNI ports;} \Narrative{migrated SNMP tables to 2.0 OID range.}
   \item \Action{Created polling worker monitoring admin state/transceiver presence;} \Narrative{triggered alarms and LED state updates.}
   \item \Action{Replaced fan control code with synchronized bank selects;} \Narrative{reduced fan noise and improved reliability.}
-  \item \Action{Contributed in Scrum;} \Narrative{stand-ups, sprint reviews, planning poker, and other engineering ceremonies.}
 \end{itemize}
 \EntryGap
 
@@ -169,7 +181,9 @@
 \end{itemize}
 
 \section*{Skills}
-{\youngserif Programming Languages:} C, C++, C\#, Java, Python, Swift, Lua, Assembly, SQL, Terraform, JavaScript, TypeScript \\
-{\youngserif Other Relevant Skills:} IT Helpdesk, Maven, CI/CD, Unix Shell, Linux, Angular, Vue, React, AWS, .NET, Netconf
+{\youngserif\bfseries Languages:} C, C++, C\#, Java, Python, Swift, TypeScript, JavaScript, SQL, Lua, Assembly \\
+{\youngserif\bfseries Frameworks \& Libraries:} React, Next.js, .NET, ASP.NET Core, Angular, Vue, SwiftUI, Tailwind CSS, MUI, ShadCN UI, Prisma, Drizzle ORM, Zod \\
+{\youngserif\bfseries Data \& Backend:} PostgreSQL, MySQL, REST, Netconf/YANG, SNMP, RPC, Optical Networking, Streaming Infrastructure \\
+{\youngserif\bfseries Cloud \& Tooling:} AWS, Terraform, CI/CD, Unix/Linux, Maven, Make, Git, Cursor
 
 \end{document}
