@@ -6,7 +6,9 @@
     "dev": "cp node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdf.worker.min.mjs && astro dev",
     "build": "cp node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdf.worker.min.mjs && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "resume:fonts": "bash ./scripts/install-resume-fonts.sh",
+    "resume:build": "npm run resume:fonts && make -C latex build"
   },
   "dependencies": {
     "astro": "^5.17.1",
