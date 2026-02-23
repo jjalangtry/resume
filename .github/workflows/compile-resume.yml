@@ -22,17 +22,37 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check for pre-compiled PDF
+        id: check_pdf
+        run: |
+          if [ -f latex/resume.pdf ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "Pre-compiled PDF found — skipping LaTeX compilation."
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "No pre-compiled PDF — will compile from source."
+          fi
+
       - name: Install resume fonts
+        if: steps.check_pdf.outputs.found != 'true'
         run: bash ./scripts/install-resume-fonts.sh
 
       - name: Compile LaTeX
+        if: steps.check_pdf.outputs.found != 'true'
         uses: xu-cheng/latex-action@v3
         with:
           root_file: resume.tex
           working_directory: latex
           latexmk_use_xelatex: true
           args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
-          extra_fonts: ./fonts/*.ttf
+          pre_compile: |
+            mkdir -p "$HOME/.fonts"
+            cp ./fonts/*.ttf "$HOME/.fonts/" 2>/dev/null || true
+            cp ./fonts/*.TTF "$HOME/.fonts/" 2>/dev/null || true
+            rm -rf "$HOME/.cache/fontconfig" 2>/dev/null || true
+            fc-cache -f 2>/dev/null || true
+            echo "Fonts installed in container:"
+            fc-list 2>/dev/null | grep -i "times\|young" | head -10 || true
 
       - name: Generate OG preview image
         run: |
