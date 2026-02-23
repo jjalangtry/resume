@@ -8,9 +8,11 @@
 \usepackage{fontspec}
 \usepackage{microtype}
 
-% Fonts: Young Serif for headers/name, Times New Roman for body
+% Fonts: Young Serif for headers/name, Times-style body with CI-safe fallback
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont{Times New Roman}[Scale=0.98]
+\IfFontExistsTF{Times New Roman}
+  {\setmainfont{Times New Roman}[Scale=0.98]}
+  {\setmainfont{TeX Gyre Termes}[Scale=1.0]}
 \newfontfamily\youngserif{YoungSerif-Regular.ttf}[Path=./fonts/]
 
 % Color palette
