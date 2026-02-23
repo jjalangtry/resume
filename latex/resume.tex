@@ -1,5 +1,5 @@
 \documentclass[10pt]{article}
-\usepackage[margin=0.5in]{geometry}
+\usepackage[margin=0.56in]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{xcolor}
@@ -9,6 +9,7 @@
 \usepackage{microtype}
 
 % Fonts: Young Serif for headers/name, TeX Gyre Heros for body
+\defaultfontfeatures{Ligatures=TeX}
 \setmainfont{TeX Gyre Heros}[Scale=0.95]
 \newfontfamily\youngserif{YoungSerif-Regular.ttf}[Path=./fonts/]
 
@@ -35,18 +36,18 @@
   {\youngserif\bfseries\large\color{Accent}}
   {}{0em}{}
   [{\color{Accent}\titlerule}]
-\titlespacing{\section}{0pt}{3pt}{2pt}
+\titlespacing{\section}{0pt}{6pt}{3pt}
 
 % Item spacing
 \setlist[itemize]{
   leftmargin=*,
   label=-,
-  itemsep=0pt,
-  topsep=1pt,
+  itemsep=1pt,
+  topsep=2pt,
   parsep=0pt,
   partopsep=0pt,
-  before=\vspace{-1pt},
-  after=\vspace{-1pt}
+  before=\vspace{0pt},
+  after=\vspace{1pt}
 }
 
 % No page numbers
@@ -54,15 +55,17 @@
 
 % Role headings use Young Serif bold
 \newcommand{\Role}[1]{{\youngserif\textbf{#1}}}
-\newcommand{\EntryGap}{\vspace{3pt}}
+\newcommand{\EntryGap}{\vspace{4pt}}
 
 % Pipe + italic meta formatting — Young Serif italic
 \newcommand{\Meta}[1]{{\youngserif\textbar{}\ \textit{\color{Slate}#1}}}
 \newcommand{\Date}[1]{{\youngserif\textit{#1}}}
 \newcommand{\Tech}[1]{{\youngserif\textbf{Technologies:}} #1}
+\newcommand{\Action}[1]{{\youngserif\color{Accent}\textbf{#1}}}
+\newcommand{\Narrative}[1]{{\color{Body}#1}}
 
 \begin{document}
-\fontsize{9.8}{11.15}\selectfont
+\fontsize{9.8}{11.5}\selectfont
 
 \begin{minipage}[b]{0.38\linewidth}
 {\youngserif\fontsize{24}{26}\selectfont\bfseries\color{Accent} Jakob Langtry}
@@ -87,29 +90,29 @@
 {\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 -- Present} \\
 \Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
-  \item Refactored user system (CQRS) in the admin portal; \textit{eliminated manual database user creation.}
-  \item Built bulk upload tooling to import 10K+ row tab-delimited sheets; \textit{migrated data into the new DB.}
-  \item Added I/O virtualization; \textit{reduced stream recovery to \textasciitilde{}30s of dead air from 5 minutes of stream loss; removed single-failure points.}
-  \item Implemented Markdown descriptions app-wide; \textit{editable and bulk-editable flows via custom \texttt{IDescribable}.}
-  \item Trusted with critical infrastructure across frontend, backend, and streaming; \textit{fast-paced startup environment.}
-  \item Participated in code reviews; \textit{found bugs, improved implementation quality, and suggested fixes.}
+  \item \Action{Refactored user system (CQRS) in the admin portal;} \Narrative{eliminated manual database user creation.}
+  \item \Action{Built bulk upload tooling to import 10K+ row tab-delimited sheets;} \Narrative{migrated data into the new DB.}
+  \item \Action{Added I/O virtualization;} \Narrative{reduced stream recovery to \textasciitilde{}30s of dead air from 5 minutes of stream loss; removed single-failure points.}
+  \item \Action{Implemented Markdown descriptions app-wide;} \Narrative{editable and bulk-editable flows via custom \texttt{IDescribable}.}
+  \item \Action{Trusted with critical infrastructure across frontend, backend, and streaming;} \Narrative{fast-paced startup environment.}
+  \item \Action{Participated in code reviews;} \Narrative{found bugs, improved implementation quality, and suggested fixes.}
 \end{itemize}
 \EntryGap
 
 {\Role{Precision Optical Technologies (Purchased by Belden) \Meta{Software Engineering Co-op}}} \hfill \Date{Aug 2024 -- May 2025} \\
 \Tech{C, C++, Make, Unix, Netconf, RPC, SNMP, Optical Networking, YANG}
 \begin{itemize}
-  \item Enabled breakout mode for QSFP NNI ports; \textit{migrated SNMP tables to 2.0 OID range.}
-  \item Created polling worker monitoring admin state/transceiver presence; \textit{triggered alarms and LED state updates.}
-  \item Replaced fan control code with synchronized bank selects; \textit{reduced fan noise and improved reliability.}
-  \item Contributed in Scrum; \textit{stand-ups, sprint reviews, planning poker, and other engineering ceremonies.}
+  \item \Action{Enabled breakout mode for QSFP NNI ports;} \Narrative{migrated SNMP tables to 2.0 OID range.}
+  \item \Action{Created polling worker monitoring admin state/transceiver presence;} \Narrative{triggered alarms and LED state updates.}
+  \item \Action{Replaced fan control code with synchronized bank selects;} \Narrative{reduced fan noise and improved reliability.}
+  \item \Action{Contributed in Scrum;} \Narrative{stand-ups, sprint reviews, planning poker, and other engineering ceremonies.}
 \end{itemize}
 \EntryGap
 
 {\Role{Apple, Inc. \Meta{Product Specialist}}} \hfill \Date{Oct 2023 -- Feb 2024}
 \begin{itemize}
-  \item Learned critical time management; \textit{handled dense part-time work while attending school full-time.}
-  \item Assisted customers daily with device setup and tailored solutions; \textit{consistently hitting sales targets.}
+  \item \Action{Learned critical time management;} \Narrative{handled dense part-time work while attending school full-time.}
+  \item \Action{Assisted customers daily with device setup and tailored solutions;} \Narrative{consistently hitting sales targets.}
 \end{itemize}
 \EntryGap
 
@@ -123,44 +126,44 @@
 \section*{Leadership}
 {\Role{President \Meta{RIT Society of Software Engineers}}} \hfill \Date{2024 -- 2025}
 \begin{itemize}
-  \item Finished website rework of sse.rit.edu; \textit{replacing campusgroups and google drive for club management.}
-  \item Expanded sponsorships with 5 new corporate partnerships; \textit{funded events and internal tooling.}
-  \item Secured lab renovation; \textit{won approvals despite red tape; modernizing member space.}
+  \item \Action{Finished website rework of sse.rit.edu;} \Narrative{replacing campusgroups and google drive for club management.}
+  \item \Action{Expanded sponsorships with 5 new corporate partnerships;} \Narrative{funded events and internal tooling.}
+  \item \Action{Secured lab renovation;} \Narrative{won approvals despite red tape; modernizing member space.}
 \end{itemize}
 
 \section*{Projects}
 {\Role{Playlist Converter \Meta{Personal Project}}} \hfill \Date{Dec 2025} \\
 \Tech{Next.js, React, TypeScript, Tailwind CSS, PostgreSQL, Drizzle ORM, Spotify OAuth, Apple MusicKit}
 \begin{itemize}
-  \item Built Spotify/Apple Music playlist conversion; \textit{ISRC matching, fuzzy fallback, manual matching, and shareable expiring links.}
+  \item \Action{Built Spotify/Apple Music playlist conversion;} \Narrative{ISRC matching, fuzzy fallback, manual matching, and shareable expiring links.}
 \end{itemize}
 \EntryGap
 
 {\Role{React Kanban Board \Meta{Personal Project}}} \hfill \Date{Feb 2025 -- May 2025} \\
 \Tech{Next.js, React, TypeScript, Prisma (MySQL), NextAuth, Tailwind CSS, ShadCN UI, Nodemailer, Zod}
 \begin{itemize}
-  \item OAuth-secured shared boards with invites/resets, drag-drop UI, comments/markdown/attachments, and JSON Merge Patch updates.
+  \item \Action{OAuth-secured shared boards with invites/resets, drag-drop UI, comments/markdown/attachments, and JSON Merge Patch updates.}
 \end{itemize}
 \EntryGap
 
 {\Role{Delegative Strategy Game \Meta{Personal Project}}} \hfill \Date{Jan 2026} \\
 \Tech{Python, Textual, Rich, Pydantic, HTTPX, Agentic Tool Calling, OpenRouter API}
 \begin{itemize}
-  \item Built an AI-driven text strategy simulation; \textit{natural-language orders, advisor dialogue, and time-based world-state progression.}
+  \item \Action{Built an AI-driven text strategy simulation;} \Narrative{natural-language orders, advisor dialogue, and time-based world-state progression.}
 \end{itemize}
 \EntryGap
 
 {\Role{WebsiteTheSSEquel \Meta{sse.rit.edu (Open Source)}}} \hfill \Date{Jan 2026 -- Present} \\
 \Tech{Next.js, TypeScript, Prisma, NextAuth, Tailwind CSS, PostgreSQL}
 \begin{itemize}
-  \item Contributed production features; \textit{role-based OAuth scopes, invite flow, event/attendance tooling, mentoring/mobile fixes, and mass-email/event-link improvements.}
+  \item \Action{Contributed production features;} \Narrative{role-based OAuth scopes, invite flow, event/attendance tooling, mentoring/mobile fixes, and mass-email/event-link improvements.}
 \end{itemize}
 \EntryGap
 
 {\Role{ReadFaster \Meta{Personal Project}}} \hfill \Date{Jan 2026} \\
 \Tech{Swift, SwiftUI, SwiftData, PDFKit, SwiftSoup}
 \begin{itemize}
-  \item Built RSVP speed-reading app for iOS/macOS; \textit{TXT/EPUB/PDF support, adaptive pacing, chapter navigation, and comprehension-focused controls.}
+  \item \Action{Built RSVP speed-reading app for iOS/macOS;} \Narrative{TXT/EPUB/PDF support, adaptive pacing, chapter navigation, and comprehension-focused controls.}
 \end{itemize}
 
 \section*{Skills}
