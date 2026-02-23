@@ -18,3 +18,6 @@
 *.vrb
 *.xdv
 *.pdf
+
+# MS core fonts copied during CI build (not redistributable)
+fonts/Times*.TTF
