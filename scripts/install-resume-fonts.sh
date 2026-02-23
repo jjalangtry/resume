@@ -7,11 +7,21 @@ FONTS_DIR="$SCRIPT_DIR/../latex/fonts"
 echo "Checking resume font dependencies..."
 
 copy_times_to_workspace() {
-  local src="/usr/share/fonts/truetype/msttcorefonts"
-  if [[ -d "$src" ]]; then
-    echo "Copying Times New Roman TTFs into latex/fonts/ for Docker build..."
-    cp "$src"/Times.TTF "$src"/Timesbd.TTF "$src"/Timesi.TTF "$src"/Timesbi.TTF "$FONTS_DIR/" 2>/dev/null || true
-    ls "$FONTS_DIR"/Times*.TTF 2>/dev/null && echo "Font files staged."
+  echo "Locating Times New Roman TTFs to stage for Docker build..."
+  local found=0
+  for name in Times.TTF Timesbd.TTF Timesi.TTF Timesbi.TTF; do
+    local path
+    path=$(find /usr/share/fonts -iname "$name" -print -quit 2>/dev/null || true)
+    if [[ -n "$path" ]]; then
+      cp "$path" "$FONTS_DIR/"
+      found=1
+    fi
+  done
+  if [[ "$found" -eq 1 ]]; then
+    echo "Font files staged in latex/fonts/:"
+    ls "$FONTS_DIR"/Times*.TTF "$FONTS_DIR"/times*.ttf 2>/dev/null || true
+  else
+    echo "Warning: could not locate Times TTF files to stage."
   fi
 }
 
