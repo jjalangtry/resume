@@ -8,9 +8,9 @@
 \usepackage{fontspec}
 \usepackage{microtype}
 
-% Fonts: Young Serif for headers/name, TeX Gyre Heros for body
+% Fonts: Young Serif for headers/name, Times New Roman for body
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont{TeX Gyre Heros}[Scale=0.95]
+\setmainfont{Times New Roman}[Scale=0.98]
 \newfontfamily\youngserif{YoungSerif-Regular.ttf}[Path=./fonts/]
 
 % Color palette
@@ -60,9 +60,9 @@
 % Pipe + italic meta formatting — Young Serif italic
 \newcommand{\Meta}[1]{{\youngserif\textbar{}\ \textit{\color{Slate}#1}}}
 \newcommand{\Date}[1]{{\youngserif\textit{#1}}}
-\newcommand{\Tech}[1]{{\youngserif Technologies:} #1}
-\newcommand{\Action}[1]{{\color{Accent}#1}}
-\newcommand{\Narrative}[1]{{\color{Body}#1}}
+\newcommand{\Tech}[1]{{\sffamily\itshape Technologies:} {\sffamily #1}}
+\newcommand{\Action}[1]{{\sffamily\color{Accent}#1}}
+\newcommand{\Narrative}[1]{{\sffamily\color{Body}#1}}
 
 \begin{document}
 \fontsize{9.8}{11.35}\selectfont
