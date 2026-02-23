@@ -35,7 +35,7 @@
   {\youngserif\bfseries\large\color{Accent}}
   {}{0em}{}
   [{\color{Accent}\titlerule}]
-\titlespacing{\section}{0pt}{5pt}{3pt}
+\titlespacing{\section}{0pt}{3pt}{2pt}
 
 % Item spacing
 \setlist[itemize]{
@@ -54,7 +54,7 @@
 
 % Role headings use Young Serif bold
 \newcommand{\Role}[1]{{\youngserif\textbf{#1}}}
-\newcommand{\EntryGap}{\vspace{2pt}}
+\newcommand{\EntryGap}{\vspace{3pt}}
 
 % Pipe + italic meta formatting — Young Serif italic
 \newcommand{\Meta}[1]{{\youngserif\textbar{}\ \textit{\color{Slate}#1}}}
@@ -66,8 +66,6 @@
 
 \begin{minipage}[b]{0.38\linewidth}
 {\youngserif\fontsize{24}{26}\selectfont\bfseries\color{Accent} Jakob Langtry}
-\vspace{1pt}\\
-{\youngserif\small\color{Slate}Full-Stack Software Engineer (React, TypeScript, .NET)}
 \end{minipage}%
 \hfill
 \begin{minipage}[b]{0.60\linewidth}
@@ -79,84 +77,94 @@
 {\faLinkedinIn}\ \href{https://linkedin.com/in/jjalangtry}{linkedin.com/in/jjalangtry} \,|\,
 {\faGlobe}\ \href{https://jjalangtry.com}{jjalangtry.com}}
 \end{minipage}
-{\color{Accent}\rule{\linewidth}{0.6pt}}
+{\color{Accent}\rule{\linewidth}{0.8pt}}
+
+\section*{Education}
+{\youngserif\textbf{Rochester Institute of Technology}} \Meta{B.S. Software Engineering} \hfill \Date{May 2026} \\
+{\youngserif\textbf{Corning Community College}} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
 
 \section*{Experience}
 {\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 -- Present} \\
-\Tech{React, TypeScript, C\#, ASP.NET Core, AWS, SQL, Streaming Infrastructure}
+\Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
-  \item Refactored the admin portal user domain with CQRS, eliminating manual database user creation.
-  \item Built bulk upload tooling for 10K+ row tab-delimited datasets, accelerating migration into the new database.
-  \item Added stream I/O virtualization and failover handling, reducing recovery time from about 5 minutes to 30 seconds.
-  \item Implemented reusable Markdown support through \texttt{IDescribable}, enabling editable and bulk-editable descriptions across the app.
-  \item Owned critical frontend, backend, and streaming infrastructure changes in a fast-moving startup environment.
+  \item Refactored user system (CQRS) in the admin portal; \textit{eliminated manual database user creation.}
+  \item Built bulk upload tooling to import 10K+ row tab-delimited sheets; \textit{migrated data into the new DB.}
+  \item Added I/O virtualization; \textit{reduced stream recovery to \textasciitilde{}30s of dead air from 5 minutes of stream loss; removed single-failure points.}
+  \item Implemented Markdown descriptions app-wide; \textit{editable and bulk-editable flows via custom \texttt{IDescribable}.}
+  \item Trusted with critical infrastructure across frontend, backend, and streaming; \textit{fast-paced startup environment.}
+  \item Participated in code reviews; \textit{found bugs, improved implementation quality, and suggested fixes.}
 \end{itemize}
 \EntryGap
 
 {\Role{Precision Optical Technologies (Purchased by Belden) \Meta{Software Engineering Co-op}}} \hfill \Date{Aug 2024 -- May 2025} \\
-\Tech{C, C++, Unix, Netconf, RPC, SNMP, Optical Networking}
+\Tech{C, C++, Make, Unix, Netconf, RPC, SNMP, Optical Networking, YANG}
 \begin{itemize}
-  \item Enabled breakout mode for QSFP NNI ports and migrated SNMP tables to the 2.0 OID range.
-  \item Built a polling worker for admin state and transceiver presence, triggering alarm and LED state updates.
-  \item Replaced fan control logic with synchronized bank selection, improving thermal reliability and reducing noise.
-  \item Shipped firmware features in a Scrum environment through stand-ups, sprint reviews, and planning sessions.
+  \item Enabled breakout mode for QSFP NNI ports; \textit{migrated SNMP tables to 2.0 OID range.}
+  \item Created polling worker monitoring admin state/transceiver presence; \textit{triggered alarms and LED state updates.}
+  \item Replaced fan control code with synchronized bank selects; \textit{reduced fan noise and improved reliability.}
+  \item Contributed in Scrum; \textit{stand-ups, sprint reviews, planning poker, and other engineering ceremonies.}
 \end{itemize}
 \EntryGap
 
 {\Role{Apple, Inc. \Meta{Product Specialist}}} \hfill \Date{Oct 2023 -- Feb 2024}
 \begin{itemize}
-  \item Delivered high-volume customer support and solution guidance while balancing full-time coursework and part-time operations.
+  \item Learned critical time management; \textit{handled dense part-time work while attending school full-time.}
+  \item Assisted customers daily with device setup and tailored solutions; \textit{consistently hitting sales targets.}
 \end{itemize}
 \EntryGap
 
 {\Role{Hardinge, Inc. \Meta{IT/Computer Science Intern}}} \hfill \Date{Jun 2021 -- Aug 2021}
 \begin{itemize}
-  \item Built software-vendor metrics tooling as the sole programmer on a legacy-system initiative.
-  \item Automated TV floor displays and supported internal IT operations for hundreds of monthly employee requests.
+  \item Sole programmer on initiative; implemented software-vendor metrics tooling on legacy systems.
+  \item Developed a system to auto-display PowerPoints on dozens of factory TVs.
+  \item Provided IT helpdesk support to hundreds of employees monthly.
+\end{itemize}
+
+\section*{Leadership}
+{\Role{President \Meta{RIT Society of Software Engineers}}} \hfill \Date{2024 -- 2025}
+\begin{itemize}
+  \item Finished website rework of sse.rit.edu; \textit{replacing campusgroups and google drive for club management.}
+  \item Expanded sponsorships with 5 new corporate partnerships; \textit{funded events and internal tooling.}
+  \item Secured lab renovation; \textit{won approvals despite red tape; modernizing member space.}
 \end{itemize}
 
 \section*{Projects}
 {\Role{Playlist Converter \Meta{Personal Project}}} \hfill \Date{Dec 2025} \\
-\Tech{Next.js, React, TypeScript, PostgreSQL, Drizzle ORM, Spotify OAuth, Apple MusicKit}
+\Tech{Next.js, React, TypeScript, Tailwind CSS, PostgreSQL, Drizzle ORM, Spotify OAuth, Apple MusicKit}
 \begin{itemize}
-  \item Built Spotify-to-Apple Music playlist conversion with ISRC matching, fuzzy fallback, manual correction flows, and expiring share links.
+  \item Built Spotify/Apple Music playlist conversion; \textit{ISRC matching, fuzzy fallback, manual matching, and shareable expiring links.}
 \end{itemize}
 \EntryGap
 
 {\Role{React Kanban Board \Meta{Personal Project}}} \hfill \Date{Feb 2025 -- May 2025} \\
-\Tech{Next.js, React, TypeScript, Prisma, MySQL, NextAuth, Tailwind CSS}
+\Tech{Next.js, React, TypeScript, Prisma (MySQL), NextAuth, Tailwind CSS, ShadCN UI, Nodemailer, Zod}
 \begin{itemize}
-  \item Shipped multi-user boards with OAuth auth, drag-and-drop workflows, comments, attachments, and JSON Merge Patch updates.
+  \item OAuth-secured shared boards with invites/resets, drag-drop UI, comments/markdown/attachments, and JSON Merge Patch updates.
+\end{itemize}
+\EntryGap
+
+{\Role{Delegative Strategy Game \Meta{Personal Project}}} \hfill \Date{Jan 2026} \\
+\Tech{Python, Textual, Rich, Pydantic, HTTPX, Agentic Tool Calling, OpenRouter API}
+\begin{itemize}
+  \item Built an AI-driven text strategy simulation; \textit{natural-language orders, advisor dialogue, and time-based world-state progression.}
 \end{itemize}
 \EntryGap
 
 {\Role{WebsiteTheSSEquel \Meta{sse.rit.edu (Open Source)}}} \hfill \Date{Jan 2026 -- Present} \\
 \Tech{Next.js, TypeScript, Prisma, NextAuth, Tailwind CSS, PostgreSQL}
 \begin{itemize}
-  \item Contributed production features including role-based OAuth scopes, invite flows, event tooling, and reliability fixes for mobile/member workflows.
+  \item Contributed production features; \textit{role-based OAuth scopes, invite flow, event/attendance tooling, mentoring/mobile fixes, and mass-email/event-link improvements.}
 \end{itemize}
 \EntryGap
 
 {\Role{ReadFaster \Meta{Personal Project}}} \hfill \Date{Jan 2026} \\
 \Tech{Swift, SwiftUI, SwiftData, PDFKit, SwiftSoup}
 \begin{itemize}
-  \item Built an RSVP speed-reading app for iOS/macOS with TXT/EPUB/PDF ingestion, adaptive pacing, and comprehension-focused controls.
+  \item Built RSVP speed-reading app for iOS/macOS; \textit{TXT/EPUB/PDF support, adaptive pacing, chapter navigation, and comprehension-focused controls.}
 \end{itemize}
-
-\section*{Leadership}
-{\Role{President \Meta{RIT Society of Software Engineers}}} \hfill \Date{2024 -- 2025}
-\begin{itemize}
-  \item Led the migration of \texttt{sse.rit.edu}, replacing CampusGroups and Google Drive with custom club-management workflows.
-  \item Expanded sponsorship through five new corporate partnerships to fund member events and internal tooling.
-\end{itemize}
-
-\section*{Education}
-{\youngserif\textbf{Rochester Institute of Technology}} \Meta{B.S. Software Engineering} \hfill \Date{May 2026} \\
-{\youngserif\textbf{Corning Community College}} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
 
 \section*{Skills}
-{\youngserif\textbf{Languages:}} TypeScript, JavaScript, C\#, SQL, Python, C/C++, Swift, Java \\
-{\youngserif\textbf{Frameworks:}} React, Next.js, ASP.NET Core, Tailwind CSS, Prisma, NextAuth \\
-{\youngserif\textbf{Infrastructure/Tools:}} AWS, PostgreSQL, MySQL, CI/CD, Linux/Unix, Netconf, SNMP
+{\youngserif\textbf{Programming Languages:}} C, C++, C\#, Java, Python, Swift, Lua, Assembly, SQL, Terraform, JavaScript, TypeScript \\
+{\youngserif\textbf{Other Relevant Skills:}} IT Helpdesk, Maven, CI/CD, Unix Shell, Linux, Angular, Vue, React, AWS, .NET, Netconf
 
 \end{document}
