@@ -1,5 +1,5 @@
 \documentclass[10pt]{article}
-\usepackage[margin=0.52in]{geometry}
+\usepackage[margin=0.42in]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{xcolor}
@@ -49,7 +49,7 @@
   {\youngserif\bfseries\large\color{Accent}}
   {}{0em}{}
   [{\color{Accent}\titlerule}]
-\titlespacing{\section}{0pt}{5pt}{2pt}
+\titlespacing{\section}{0pt}{4pt}{3pt}
 
 % Item spacing
 \setlist[itemize]{
@@ -68,11 +68,11 @@
 
 % Role headings: Young Serif bold
 \newcommand{\Role}[1]{{\youngserif\bfseries #1}}
-\newcommand{\EntryGap}{\vspace{2pt}}
+\newcommand{\EntryGap}{\vspace{1pt}}
 
 % Pipe + italic meta addendum: Young Serif italic
 \newcommand{\Meta}[1]{{\youngserif\textbar{}\ \itshape\color{Slate}#1}}
-\newcommand{\Date}[1]{{\textit{#1}}}
+\newcommand{\Date}[1]{{\youngserif\bfseries #1}}
 \newcommand{\Tech}[1]{{\itshape Technologies:} #1}
 \newcommand{\Action}[1]{{\color{Accent}#1}}
 \newcommand{\Narrative}[1]{{\color{Body}#1}}
@@ -104,7 +104,7 @@
 {\youngserif\bfseries Corning Community College} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
 
 \section*{Experience}
-{\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 -- Present} \\
+{\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 - Present} \\
 \Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
   \item \Action{Created user management page and refactored user system (CQRS) in the admin portal;} \Narrative{eliminated manual database user creation.}
@@ -114,7 +114,7 @@
 \end{itemize}
 \EntryGap
 
-{\Role{Precision Optical Technologies (Purchased by Belden) \Meta{Software Engineering Co-op}}} \hfill \Date{Aug 2024 -- May 2025} \\
+{\Role{Precision Optical Technologies (Purchased by Belden) \Meta{Software Engineering Co-op}}} \hfill \Date{Aug 2024 - May 2025} \\
 \Tech{C, C++, Make, Unix, Netconf, RPC, SNMP, Optical Networking, YANG}
 \begin{itemize}
   \item \Action{Enabled breakout mode for QSFP NNI ports;} \Narrative{migrated SNMP tables to 2.0 OID range.}
@@ -123,14 +123,14 @@
 \end{itemize}
 \EntryGap
 
-{\Role{Apple, Inc. \Meta{Product Specialist}}} \hfill \Date{Oct 2023 -- Feb 2024}
+{\Role{Apple, Inc. \Meta{Product Specialist}}} \hfill \Date{Oct 2023 - Feb 2024}
 \begin{itemize}
   \item \Action{Learned critical time management;} \Narrative{handled dense part-time work while attending school full-time.}
   \item \Action{Assisted customers daily with device setup and tailored solutions;} \Narrative{consistently hitting sales targets.}
 \end{itemize}
 \EntryGap
 
-{\Role{Hardinge, Inc. \Meta{IT/Computer Science Intern}}} \hfill \Date{Jun 2021 -- Aug 2021}
+{\Role{Hardinge, Inc. \Meta{IT/Computer Science Intern}}} \hfill \Date{Jun 2021 - Aug 2021}
 \begin{itemize}
   \item Sole programmer on initiative; implemented software-vendor metrics tooling on legacy systems.
   \item Developed a system to auto-display PowerPoints on dozens of factory TVs.
@@ -138,15 +138,43 @@
 \end{itemize}
 
 \section*{Leadership}
-{\Role{President \Meta{RIT Society of Software Engineers}}} \hfill \Date{2024 -- 2025}
+{\Role{President \Meta{RIT Society of Software Engineers}}} \hfill \Date{Aug 2024 -- May 2025}
 \begin{itemize}
   \item \Action{Finished website rework of sse.rit.edu;} \Narrative{replacing Campusgroups and google drive for club management.}
-  \item \Action{Expanded sponsorships with 5 new corporate partnerships;} \Narrative{funded events and internal tooling.}
-  \item \Action{Secured lab renovation;} \Narrative{won approvals despite red tape; modernizing member space.}
+  \item \Action{Bolstered alumni relations;} \Narrative{got hundreds of alumni from 2005-2025 to put their contact information on the website.}
+  \item \Action{Secured lab renovation;} \Narrative{won approvals despite red tape; modernizing member space. 40000\$ renovation budget 5 year long project. }
 \end{itemize}
 
 \section*{Projects}
-{\Role{Playlist Converter \Meta{Personal Project}}} \hfill \Date{Dec 2025} \\
+{\Role{BeyondRGB \Meta{RIT Senior Project (Open Source)}}} \hfill \Date{Oct 2025 -- May 2026} \\
+\Tech{C++, Electron, React, TypeScript, CMake, vcpkg}
+\begin{itemize}
+  \item \Action{Contributed to a spectral imaging desktop app for museum art archiving (43 stars);} \Narrative{drag-and-drop import, OS-synced theming, settings UI refactor, blob memory leaks, and backend error propagation.}
+\end{itemize}
+\EntryGap
+
+{\Role{WebsiteTheSSEquel \Meta{sse.rit.edu (Open Source)}}} \hfill \Date{Jan 2026 -- Present} \\
+\Tech{Next.js, TypeScript, Prisma, NextAuth, Tailwind CSS, PostgreSQL}
+\begin{itemize}
+  \item \Action{Contributed production features;} \Narrative{role-based OAuth scopes, invite flow, event/attendance tooling, mentoring/mobile fixes, and mass-email/event-link improvements.}
+\end{itemize}
+\EntryGap
+
+{\Role{ReadFaster \Meta{Personal Project}}} \hfill \Date{Jan 2026 -- Feb 2026} \\
+\Tech{Swift, SwiftUI, SwiftData, PDFKit, SwiftSoup}
+\begin{itemize}
+  \item \Action{Built RSVP speed-reading app for iOS/macOS;} \Narrative{TXT/EPUB/PDF support, adaptive pacing, chapter navigation, and comprehension-focused controls.}
+\end{itemize}
+\EntryGap
+
+{\Role{Delegative Strategy Game \Meta{Personal Project}}} \hfill \Date{Dec 2025 -- Jan 2026} \\
+\Tech{Python, Textual, Rich, Pydantic, HTTPX, Agentic Tool Calling, OpenRouter API}
+\begin{itemize}
+  \item \Action{Agentic AI Tool Call Game Framework;} \Narrative{agent creates game world state based on natural language interactions with the user.}
+\end{itemize}
+\EntryGap
+
+{\Role{Playlist Converter \Meta{Personal Project}}} \hfill \Date{Nov 2025 -- Dec 2025} \\
 \Tech{Next.js, React, TypeScript, Tailwind CSS, PostgreSQL, Drizzle ORM, Spotify OAuth, Apple MusicKit}
 \begin{itemize}
   \item \Action{Built Spotify/Apple Music playlist conversion;} \Narrative{ISRC matching, fuzzy fallback, manual matching, and shareable expiring links.}
@@ -158,31 +186,10 @@
 \begin{itemize}
   \item \Action{OAuth-secured shared boards with invites/resets, drag-drop UI, comments/markdown/attachments, and JSON Merge Patch updates.}
 \end{itemize}
-\EntryGap
-
-{\Role{Delegative Strategy Game \Meta{Personal Project}}} \hfill \Date{Jan 2026} \\
-\Tech{Python, Textual, Rich, Pydantic, HTTPX, Agentic Tool Calling, OpenRouter API}
-\begin{itemize}
-  \item \Action{Built an AI-driven text strategy simulation;} \Narrative{natural-language orders, advisor dialogue, and time-based world-state progression.}
-\end{itemize}
-\EntryGap
-
-{\Role{WebsiteTheSSEquel \Meta{sse.rit.edu (Open Source)}}} \hfill \Date{Jan 2026 -- Present} \\
-\Tech{Next.js, TypeScript, Prisma, NextAuth, Tailwind CSS, PostgreSQL}
-\begin{itemize}
-  \item \Action{Contributed production features;} \Narrative{role-based OAuth scopes, invite flow, event/attendance tooling, mentoring/mobile fixes, and mass-email/event-link improvements.}
-\end{itemize}
-\EntryGap
-
-{\Role{ReadFaster \Meta{Personal Project}}} \hfill \Date{Jan 2026} \\
-\Tech{Swift, SwiftUI, SwiftData, PDFKit, SwiftSoup}
-\begin{itemize}
-  \item \Action{Built RSVP speed-reading app for iOS/macOS;} \Narrative{TXT/EPUB/PDF support, adaptive pacing, chapter navigation, and comprehension-focused controls.}
-\end{itemize}
 
 \section*{Skills}
 {\youngserif\bfseries Languages:} C, C++, C\#, Java, Python, Swift, TypeScript, JavaScript, SQL, Lua, Assembly \\
-{\youngserif\bfseries Frameworks \& Libraries:} React, Next.js, .NET, ASP.NET Core, Angular, Vue, SwiftUI, Tailwind CSS, MUI, ShadCN UI, Prisma, Drizzle ORM, Zod \\
+{\youngserif\bfseries Frameworks \& Libraries:} React, Next.js, .NET, Electron, SwiftUI, Tailwind CSS, MUI, ShadCN UI, Prisma, Drizzle ORM, Angular, Vue \\
 {\youngserif\bfseries Data \& Backend:} PostgreSQL, MySQL, REST, Netconf/YANG, SNMP, RPC, Optical Networking, Streaming Infrastructure \\
 {\youngserif\bfseries Cloud \& Tooling:} AWS, Terraform, CI/CD, Unix/Linux, Maven, Make, Git, Cursor
 
