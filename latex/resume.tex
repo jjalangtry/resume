@@ -7,6 +7,7 @@
 \usepackage{fontawesome5}
 \usepackage{fontspec}
 \usepackage{microtype}
+\usepackage{needspace}
 
 % Fonts: Times New Roman for body, Young Serif for name
 \defaultfontfeatures{Ligatures=TeX}
@@ -42,6 +43,9 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
 \raggedbottom
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
 \color{Body}
 
 % Section formatting — Young Serif
@@ -58,9 +62,7 @@
   itemsep=0pt,
   topsep=1pt,
   parsep=0pt,
-  partopsep=0pt,
-  before=\vspace{0pt},
-  after=\vspace{0pt}
+  partopsep=0pt
 }
 
 % No page numbers
@@ -68,7 +70,8 @@
 
 % Role headings: Young Serif bold
 \newcommand{\Role}[1]{{\youngserif\bfseries #1}}
-\newcommand{\EntryGap}{\vspace{1pt}}
+\newcommand{\EntryGap}{\vspace{0pt}}
+\newcommand{\ResumeSection}[1]{\Needspace{6\baselineskip}\section*{#1}}
 
 % Pipe + italic meta addendum: Young Serif italic
 \newcommand{\Meta}[1]{{\youngserif\textbar{}\ \itshape\color{Slate}#1}}
@@ -96,14 +99,14 @@
 {\color{Accent}\rule{\linewidth}{0.8pt}}
 
 \vspace{2pt}
-{\youngseriflight\small\color{Slate} Full-stack software engineer with experience spanning web and embedded systems; dedicated to craft through personal and open-source projects, with leadership experience in being President of the RIT Society of Software Engineers.}
+{\youngseriflight\small\color{Slate} Full-stack software engineer with experience spanning web and embedded systems, dedicated to craft through personal and open-source projects, with leadership experience as President of the RIT Society of Software Engineers.}
 \vspace{-1pt}
 
-\section*{Education}
+\ResumeSection{Education}
 {\youngserif\bfseries Rochester Institute of Technology} \Meta{B.S. Software Engineering} \hfill \Date{May 2026} \\
 {\youngserif\bfseries Corning Community College} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
 
-\section*{Experience}
+\ResumeSection{Experience}
 {\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 - Present} \\
 \Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
@@ -137,15 +140,15 @@
   \item Provided IT helpdesk support to hundreds of employees monthly.
 \end{itemize}
 
-\section*{Leadership}
+\ResumeSection{Leadership}
 {\Role{President \Meta{RIT Society of Software Engineers}}} \hfill \Date{Aug 2024 -- May 2025}
 \begin{itemize}
   \item \Action{Finished website rework of sse.rit.edu;} \Narrative{replacing Campusgroups and google drive for club management.}
   \item \Action{Bolstered alumni relations;} \Narrative{got hundreds of alumni from 2005-2025 to put their contact information on the website.}
-  \item \Action{Secured lab renovation;} \Narrative{won approvals despite red tape; modernizing member space. 40000\$ renovation budget 5 year long project. }
+  \item \Action{Secured lab renovation;} \Narrative{won approvals despite red tape for a \$40,000, five-year project modernizing the member space.}
 \end{itemize}
 
-\section*{Projects}
+\ResumeSection{Projects}
 {\Role{BeyondRGB \Meta{RIT Senior Project (Open Source)}}} \hfill \Date{Oct 2025 -- May 2026} \\
 \Tech{C++, Electron, React, TypeScript, CMake, vcpkg}
 \begin{itemize}
@@ -187,7 +190,7 @@
   \item \Action{OAuth-secured shared boards with invites/resets, drag-drop UI, comments/markdown/attachments, and JSON Merge Patch updates.}
 \end{itemize}
 
-\section*{Skills}
+\ResumeSection{Skills}
 {\youngserif\bfseries Languages:} C, C++, C\#, Java, Python, Swift, TypeScript, JavaScript, SQL, Lua, Assembly \\
 {\youngserif\bfseries Frameworks \& Libraries:} React, Next.js, .NET, Electron, SwiftUI, Tailwind CSS, MUI, ShadCN UI, Prisma, Drizzle ORM, Angular, Vue \\
 {\youngserif\bfseries Data \& Backend:} PostgreSQL, MySQL, REST, Netconf/YANG, SNMP, RPC, Optical Networking, Streaming Infrastructure \\
