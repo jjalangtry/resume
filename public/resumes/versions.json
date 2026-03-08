@@ -1,6 +1,11 @@
 {
-  "latest": "JakobLangtryFeb26.pdf",
+  "latest": "JakobLangtryMar26.pdf",
   "versions": [
+    {
+      "filename": "JakobLangtryMar26.pdf",
+      "label": "Mar '26",
+      "hash": "bb4e68859e"
+    },
     {
       "filename": "JakobLangtryFeb26.pdf",
       "label": "Feb '26",
