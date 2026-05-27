@@ -31,7 +31,26 @@ const pdfUrl = latest ? `/resumes/${latest}${latestHash ? `?v=${latestHash}` : '
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Jakob Langtry's current resume — always up to date." />
     <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+    {pdfUrl && <link rel="alternate" type="application/pdf" href={pdfUrl} />}
     <title>Jakob Langtry — Resume</title>
+
+    <script define:vars={{ pdfUrl }}>
+      (() => {
+        if (!pdfUrl) return;
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('view') === 'site') return;
+
+        const ua = navigator.userAgent || '';
+        const mobileUa = /Android|iPhone|iPad|iPod|Mobile|IEMobile|Opera Mini/i.test(ua);
+        const inAppBrowser = /LinkedInApp|FBAN|FBAV|Instagram|Line|MicroMessenger/i.test(ua);
+        const compactTouch = window.matchMedia?.('(max-width: 760px) and (pointer: coarse)').matches;
+
+        if (mobileUa || inAppBrowser || compactTouch) {
+          window.location.replace(pdfUrl);
+        }
+      })();
+    </script>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
