@@ -4,7 +4,7 @@
     {
       "filename": "JakobLangtryJun26.pdf",
       "label": "Jun '26",
-      "hash": "1cf5e23e0d"
+      "hash": "06a596ea1d"
     },
     {
       "filename": "JakobLangtryMar26.pdf",
@@ -15,6 +15,11 @@
       "filename": "JakobLangtryFeb26.pdf",
       "label": "Feb '26",
       "hash": "bb4e68859e"
+    },
+    {
+      "filename": "JakobLangtryJun26-rev9.pdf",
+      "label": "Jun '26 rev 9",
+      "hash": "1cf5e23e0d"
     },
     {
       "filename": "JakobLangtryJun26-rev8.pdf",
