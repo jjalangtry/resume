@@ -107,6 +107,24 @@
 {\youngserif\bfseries Corning Community College} \Meta{A.S. Computer Science} \hfill \Date{Dec 2021}
 
 \ResumeSection{Experience}
+{\Role{StatPearls \Meta{Software Engineer, Contract}}} \hfill \Date{Jun 2026 -- Present} \\
+\Tech{C\#, .NET Framework, Entity Framework, SQL Server, PubMed/NCBI API, HtmlAgilityPack}
+\begin{itemize}
+  \item \Action{Maintaining and extending the PubMed publishing pipeline;} \Narrative{a C\#/.NET system that syncs StatPearls' medical reference and CME content to PubMed and the NCBI Bookshelf.}
+  \item \Action{Working across the .NET/SQL Server content tooling;} \Narrative{author and CME data management, content archiving, and PubMed API integration.}
+\end{itemize}
+\EntryGap
+
+{\Role{CardHunt \Meta{DevOps Engineer, Contract}}} \hfill \Date{May 2026 -- Present} \\
+\Tech{GitHub Actions, PM2, Nginx, AWS EC2, Docker, PostgreSQL, Redis, systemd, Bash, Node.js, TypeScript, Fastify}
+\begin{itemize}
+  \item \Action{Took ownership of deployment for a production sports-card market aggregator (cardhunt.ai);} \Narrative{built CI/CD with GitHub Actions, PM2 cluster mode, and Nginx/Let's Encrypt on AWS EC2.}
+  \item \Action{Stood up a hardened staging environment;} \Narrative{Basic Auth, an isolated PM2 process, and symlink-based releases enabling instant rollback.}
+  \item \Action{Built production backup and recovery infrastructure;} \Narrative{automated Postgres and Redis backups with SHA256 verification and retention via systemd timers, plus restore scripts and an operational runbook.}
+  \item \Action{Hardened deploy reliability;} \Narrative{added health-check gating, surfaced PM2 logs on failure, and resolved memory-pressure and Playwright postinstall hangs.}
+\end{itemize}
+\EntryGap
+
 {\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 -- Mar 2026} \\
 \Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
