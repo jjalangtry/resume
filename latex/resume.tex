@@ -81,7 +81,7 @@
 \newcommand{\Narrative}[1]{{\color{Body}#1}}
 
 \begin{document}
-\fontsize{9.4}{10.9}\selectfont
+\fontsize{9.2}{10.5}\selectfont
 
 \begin{minipage}[b]{0.40\linewidth}
 {\youngserif\fontsize{38}{40}\selectfont\bfseries\color{Accent} Jakob Langtry}
@@ -110,7 +110,7 @@
 {\Role{StatPearls \Meta{Software Engineer, Contract}}} \hfill \Date{Jun 2026 -- Present} \\
 \Tech{C\#, .NET Framework, Entity Framework, SQL Server, PubMed/NCBI API, HtmlAgilityPack}
 \begin{itemize}
-  \item \Action{Maintaining and extending the PubMed publishing pipeline;} \Narrative{a C\#/.NET system that syncs StatPearls' medical reference and CME content to PubMed and NCBI Bookshelf.}
+  \item \Action{Maintaining the PubMed publishing pipeline;} \Narrative{a C\#/.NET system that syncs StatPearls' medical reference and CME content to PubMed and NCBI Bookshelf.}
   \item \Action{Working across the .NET/SQL Server content tooling;} \Narrative{author and CME data management, content archiving, and PubMed API integration.}
 \end{itemize}
 \EntryGap
@@ -118,9 +118,9 @@
 {\Role{CardHunt \Meta{DevOps Engineer, Contract}}} \hfill \Date{May 2026 -- Present} \\
 \Tech{GitHub Actions, PM2, Nginx, AWS EC2, Docker, PostgreSQL, Redis, systemd, Bash, Node.js, TypeScript, Fastify}
 \begin{itemize}
-  \item \Action{Took ownership of deployment for a production sports-card market aggregator (cardhunt.ai);} \Narrative{built CI/CD with GitHub Actions, PM2 cluster mode, and Nginx/Let's Encrypt on AWS EC2.}
+  \item \Action{Took ownership of deployment for a production sports-card aggregator (cardhunt.ai);} \Narrative{built CI/CD with GitHub Actions, PM2 cluster mode, and Nginx/Let's Encrypt on AWS EC2.}
   \item \Action{Stood up a hardened staging environment;} \Narrative{Basic Auth, an isolated PM2 process, and symlink-based releases enabling instant rollback.}
-  \item \Action{Built production backup and recovery infrastructure;} \Narrative{automated Postgres and Redis backups with SHA256 verification and retention via systemd timers, plus restore scripts, health-check deploy gating, and an operational runbook.}
+  \item \Action{Built production backup/recovery infrastructure;} \Narrative{automated Postgres and Redis backups with SHA256 verification and retention via systemd timers, plus restore scripts, health-check deploy gating, and a runbook.}
 \end{itemize}
 \EntryGap
 
@@ -139,7 +139,6 @@
 \begin{itemize}
   \item \Action{Enabled breakout mode for QSFP NNI ports;} \Narrative{migrated SNMP tables to 2.0 OID range.}
   \item \Action{Created polling worker monitoring admin state/transceiver presence;} \Narrative{triggered alarms and LED state updates.}
-  \item \Action{Replaced fan control code with synchronized bank selects;} \Narrative{reduced fan noise and improved reliability.}
 \end{itemize}
 \EntryGap
 
@@ -158,7 +157,7 @@
 {\Role{Lab86 Mail \Meta{Personal Project}}} \hfill \Date{May 2026 -- Present} \\
 \Tech{Next.js, React, TypeScript, Bun, Convex, Clerk, Nylas, Vercel AI SDK, Stripe, Tailwind CSS}
 \begin{itemize}
-  \item \Action{Built a hosted AI mail client unifying Google, Microsoft, iCloud, and IMAP via Nylas;} \Narrative{an agentic inbox assistant drives 150+ typed, Zod-validated tools — triage, summarization, compose, smart labels, and task boards — over a Convex backend with Stripe billing.}
+  \item \Action{Built a hosted AI mail client unifying Google, Microsoft, iCloud, and IMAP via Nylas;} \Narrative{an agentic assistant drives 150+ typed tools — triage, summarization, compose, smart labels, task boards — over a Convex backend with Stripe billing.}
 \end{itemize}
 \EntryGap
 
