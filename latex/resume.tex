@@ -110,7 +110,7 @@
 {\Role{StatPearls \Meta{Software Engineer, Contract}}} \hfill \Date{Jun 2026 -- Present} \\
 \Tech{C\#, .NET Framework, Entity Framework, SQL Server, PubMed/NCBI API, HtmlAgilityPack}
 \begin{itemize}
-  \item \Action{Maintaining the PubMed publishing pipeline;} \Narrative{a C\#/.NET system that syncs StatPearls' reference and CME content to the PubMed and NCBI Bookshelf databases.}
+  \item \Action{Maintaining the PubMed publishing pipeline;} \Narrative{a C\#/.NET system syncing reference and CME content to PubMed/NCBI Bookshelf.}
   \item \Action{Working across the .NET/SQL Server content tooling;} \Narrative{author and CME data management, content archiving, and PubMed API integration.}
 \end{itemize}
 \EntryGap
@@ -118,7 +118,7 @@
 {\Role{CardHunt \Meta{DevOps Engineer, Contract}}} \hfill \Date{Mar 2026 -- Present} \\
 \Tech{GitHub Actions, PM2, Nginx, AWS EC2, Docker, PostgreSQL, Redis, systemd, Bash, Node.js, TypeScript, Fastify}
 \begin{itemize}
-  \item \Action{Took ownership of deployment for a production sports-card aggregator (cardhunt.ai);} \Narrative{built CI/CD with GitHub Actions, PM2 cluster mode, and Nginx/Let's Encrypt on AWS EC2.}
+  \item \Action{Took ownership of deployment} \Narrative{for a production sports-card aggregator (cardhunt.ai); built CI/CD with GitHub Actions, PM2 cluster mode, and Nginx/Let's Encrypt on AWS EC2.}
   \item \Action{Stood up a hardened staging environment;} \Narrative{Basic Auth, an isolated PM2 process, and symlink-based releases enabling instant rollback.}
   \item \Action{Built production backup/recovery infrastructure;} \Narrative{automated Postgres and Redis backups with SHA256 verification and retention via systemd timers, plus restore scripts, health-check deploy gating, and a runbook.}
 \end{itemize}
@@ -127,9 +127,9 @@
 {\Role{WeTheHobby \Meta{Software Engineering Co-op}}} \hfill \Date{Jun 2025 -- Mar 2026} \\
 \Tech{React, TypeScript, C\#, .NET, ASP.NET Core, MUI, AWS, SQL, Streaming Infrastructure, Cursor}
 \begin{itemize}
-  \item \Action{Architected an admin user-management UI and CQRS refactor;} \Narrative{eliminated manual database user creation from internal operations.}
+  \item \Action{Architected an admin user-management UI} \Narrative{and CQRS refactor; eliminated manual database user creation from internal operations.}
   \item \Action{Deployed I/O virtualization across the streaming stack;} \Narrative{cut stream recovery from 5 minutes to \textasciitilde{}30 seconds and removed single points of failure.}
-  \item \Action{Implemented Markdown description editing across the product;} \Narrative{added editable and bulk-editable flows via a custom \texttt{IDescribable} interface.}
+  \item \Action{Implemented Markdown description editing} \Narrative{across the product; added editable and bulk-editable flows via a custom \texttt{IDescribable} interface.}
   \item \Action{Shipped across frontend, backend, and streaming systems;} \Narrative{worked end-to-end in a fast-moving startup environment.}
 \end{itemize}
 \EntryGap
@@ -138,7 +138,7 @@
 \Tech{C, C++, Make, Unix, Netconf, RPC, SNMP, Optical Networking, YANG}
 \begin{itemize}
   \item \Action{Enabled breakout mode for QSFP NNI ports;} \Narrative{migrated SNMP tables to 2.0 OID range.}
-  \item \Action{Created polling worker monitoring admin state/transceiver presence;} \Narrative{triggered alarms and LED state updates.}
+  \item \Action{Created a polling worker} \Narrative{monitoring admin state/transceiver presence; triggered alarms and LED state updates.}
   \item \Action{Replaced fan control code with synchronized bank selects;} \Narrative{reduced fan noise and improved reliability.}
 \end{itemize}
 \EntryGap
@@ -150,21 +150,21 @@
 {\Role{Lab86 Mail \Meta{Personal Project}}} \hfill \Date{May 2026 -- Present} \\
 \Tech{Next.js, React, TypeScript, Bun, Convex, Clerk, Nylas, Vercel AI SDK, Stripe, Tailwind CSS}
 \begin{itemize}
-  \item \Action{Built a hosted AI mail client unifying Google, Microsoft, iCloud, and IMAP via Nylas;} \Narrative{an agentic assistant drives 150+ typed tools — triage, summarization, compose, smart labels, task boards — over a Convex backend with Stripe billing.}
+  \item \Action{Built a hosted AI mail client} \Narrative{unifying Google, Microsoft, iCloud, and IMAP via Nylas; an agentic assistant drives 150+ typed tools — triage, summarization, compose, smart labels, task boards — over a Convex backend with Stripe billing.}
 \end{itemize}
 \EntryGap
 
 {\Role{BeyondRGB \Meta{RIT Senior Project (Open Source)}}} \hfill \Date{Oct 2025 -- May 2026} \\
 \Tech{C++, Electron, React, TypeScript, CMake, vcpkg}
 \begin{itemize}
-  \item \Action{Debugged blob memory leaks and backend error propagation in a spectral imaging desktop app for museum art archiving (43 stars);} \Narrative{also shipped drag-and-drop import, OS-synced theming, and a settings UI refactor.}
+  \item \Action{Debugged blob memory leaks and backend error propagation} \Narrative{in a spectral imaging desktop app for museum art archiving (43 stars); also shipped drag-and-drop import, OS-synced theming, and a settings UI refactor.}
 \end{itemize}
 \EntryGap
 
 {\Role{TheSSEquel \Meta{sse.rit.edu}}} \hfill \Date{Jan 2026 -- May 2026} \\
 \Tech{Next.js, TypeScript, Prisma, NextAuth, Tailwind CSS, PostgreSQL}
 \begin{itemize}
-  \item \Action{Contributed production features for the RIT SSE website;} \Narrative{role-based OAuth scopes, invite flow, event management and attendance lists, mentoring schedule UX (incl.\ mobile fixes), and mass-email tooling.}
+  \item \Action{Contributed production features} \Narrative{for the RIT SSE website; role-based OAuth scopes, invite flow, event management and attendance lists, mentoring schedule UX (incl.\ mobile fixes), and mass-email tooling.}
   \item \Action{Security hardening and RBAC refactor;} \Narrative{server-side authorization, stricter input validation, and expanded automated test coverage.}
 \end{itemize}
 \EntryGap
@@ -172,7 +172,7 @@
 {\Role{Treecaching \Meta{Personal Project}}} \hfill \Date{May 2026 -- Present} \\
 \Tech{Swift, SwiftUI, MapKit, WeatherKit, CoreLocation, Convex, Clerk, APNs}
 \begin{itemize}
-  \item \Action{Built a real-time iOS geocaching app with live Convex sync;} \Narrative{MapKit-based discovery, multi-stage cache progression, APNs push notifications, and role-based creator/player controls.}
+  \item \Action{Built a real-time iOS geocaching app} \Narrative{with live Convex sync, MapKit-based discovery, multi-stage cache progression, APNs push notifications, and role-based creator/player controls.}
 \end{itemize}
 
 {\Role{Playlist Converter \Meta{Personal Project}}} \hfill \Date{Nov 2025 -- Dec 2025} \\
