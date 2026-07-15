@@ -3,7 +3,7 @@ builder = "NIXPACKS"
 buildCommand = "pnpm install && pnpm build"
 
 [deploy]
-startCommand = "npx sirv dist --host --port $PORT --single"
+startCommand = "npx sirv dist --host --port $PORT --single --maxage 600"
 healthcheckPath = "/"
 healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"

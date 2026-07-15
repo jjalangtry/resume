@@ -32,6 +32,8 @@ const pdfUrl = latest ? `/resumes/${latest}${latestHash ? `?v=${latestHash}` : '
     <meta name="description" content="Jakob Langtry's current resume — always up to date." />
     <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
     {pdfUrl && <link rel="alternate" type="application/pdf" href={pdfUrl} />}
+    {pdfUrl && <link rel="preload" href={pdfUrl} as="fetch" />}
+    <link rel="modulepreload" href="/pdf.worker.min.mjs" />
     <title>Jakob Langtry — Resume</title>
 
     <script define:vars={{ pdfUrl }}>
