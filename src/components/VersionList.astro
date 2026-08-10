@@ -66,6 +66,13 @@ groups.sort((a, b) => {
 groups.forEach((g) => g.revs.sort((a, b) => revOf(b.label) - revOf(a.label)));
 
 const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` : ''}`;
+
+// Only the newest month opens on load. Older months stay collapsed.
+// A month that holds the current version always opens, or you could not see it.
+const holdsLatest = (g: MonthGroup) =>
+  g.head?.filename === latest || g.revs.some((v) => v.filename === latest);
+
+const isOpen = (g: MonthGroup, i: number) => i === 0 || holdsLatest(g);
 ---
 
 <aside class="version-panel">
@@ -80,30 +87,40 @@ const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` :
     </div>
   ) : (
     <ul class="version-list">
-      {groups.map((group) => (
+      {groups.map((group, gi) => (
         <li class="version-group">
-          {group.head ? (
-            <div
-              class={`version-item version-item--month${group.head.filename === latest ? ' version-item--active' : ''}`}
-              data-url={urlOf(group.head)}
-              data-filename={group.head.filename}
-              role="button"
-              tabindex="0"
-              title={group.head.filename}
-            >
-              <span class="version-prefix">{group.head.filename === latest ? '▶' : ' '}</span>
+          <div
+            class={`version-item version-item--month${group.head?.filename === latest ? ' version-item--active' : ''}${group.head ? '' : ' version-item--static'}`}
+          >
+            {group.revs.length > 0 ? (
+              <button
+                class="version-caret"
+                type="button"
+                aria-expanded={isOpen(group, gi) ? 'true' : 'false'}
+                aria-controls={`revs-${gi}`}
+                aria-label={`Toggle the ${group.month} revisions`}
+              >{isOpen(group, gi) ? '▾' : '▸'}</button>
+            ) : (
+              <span class="version-prefix">{group.head?.filename === latest ? '▶' : ' '}</span>
+            )}
+
+            {group.head ? (
+              <button
+                class="version-open version-label"
+                type="button"
+                data-url={urlOf(group.head)}
+                data-filename={group.head.filename}
+                title={group.head.filename}
+              >{group.month}</button>
+            ) : (
               <span class="version-label">{group.month}</span>
-              {group.head.filename === latest && <span class="version-badge">latest</span>}
-            </div>
-          ) : (
-            <div class="version-item version-item--month version-item--static">
-              <span class="version-prefix"> </span>
-              <span class="version-label">{group.month}</span>
-            </div>
-          )}
+            )}
+
+            {group.head?.filename === latest && <span class="version-badge">latest</span>}
+          </div>
 
           {group.revs.length > 0 && (
-            <ul class="version-sublist">
+            <ul class="version-sublist" id={`revs-${gi}`} hidden={!isOpen(group, gi)}>
               {group.revs.map((v) => (
                 <li
                   class={`version-item version-item--rev${v.filename === latest ? ' version-item--active' : ''}`}
@@ -193,6 +210,8 @@ const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` :
     position: relative;
   }
 
+  .version-sublist[hidden] { display: none; }
+
   /* Connecting line that ties the revisions to their month */
   .version-sublist::before {
     content: '';
@@ -236,6 +255,9 @@ const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` :
     background: rgba(152, 195, 121, 0.05);
   }
 
+  /* The month row itself is not clickable — its caret and label are */
+  .version-item--month { cursor: default; }
+
   /* Revisions sit indented below their month header */
   .version-item--rev {
     padding-left: 30px;
@@ -264,6 +286,42 @@ const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` :
 
   .version-label { flex: 1; }
 
+  /* Accordion control on every month that holds revisions */
+  .version-caret {
+    width: 10px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.62rem;
+    line-height: 1;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .version-caret:focus-visible,
+  .version-open:focus-visible {
+    outline: 1px dashed var(--primary, #98c379);
+    outline-offset: 1px;
+  }
+
+  /* The month label opens that month's build */
+  .version-open {
+    min-width: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
   .version-badge {
     font-size: 0.58rem;
     letter-spacing: 0.08em;
@@ -275,31 +333,53 @@ const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` :
 </style>
 
 <script>
-  document.querySelectorAll('.version-item').forEach((item) => {
+  // ── Load a version ──
+  document.querySelectorAll('.version-panel [data-url]').forEach((el) => {
     const activate = () => {
-      const url = item.dataset.url;
+      const url = el.dataset.url;
       if (!url) return;
 
       // Update active state
-      document.querySelectorAll('.version-item').forEach((el) => {
-        el.classList.remove('version-item--active');
-        const prefix = el.querySelector('.version-prefix');
+      document.querySelectorAll('.version-item').forEach((item) => {
+        item.classList.remove('version-item--active');
+        const prefix = item.querySelector('.version-prefix');
         if (prefix) prefix.textContent = ' ';
       });
-      item.classList.add('version-item--active');
-      const prefix = item.querySelector('.version-prefix');
-      if (prefix) prefix.textContent = '▶';
+
+      const row = el.closest('.version-item');
+      if (row) {
+        row.classList.add('version-item--active');
+        const prefix = row.querySelector('.version-prefix');
+        if (prefix) prefix.textContent = '▶';
+      }
 
       // Update toolbar prompt
       const promptEl = document.querySelector('.prompt');
-      if (promptEl) promptEl.textContent = item.dataset.filename;
+      if (promptEl) promptEl.textContent = el.dataset.filename;
 
       window.dispatchEvent(new CustomEvent('load-version', { detail: { url } }));
     };
 
-    item.addEventListener('click', activate);
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    el.addEventListener('click', activate);
+
+    // Real buttons already fire click on Enter and Space
+    if (el.tagName !== 'BUTTON') {
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+      });
+    }
+  });
+
+  // ── Open and close a month ──
+  document.querySelectorAll('.version-caret').forEach((caret) => {
+    caret.addEventListener('click', () => {
+      const list = document.getElementById(caret.getAttribute('aria-controls'));
+      if (!list) return;
+
+      const open = caret.getAttribute('aria-expanded') === 'true';
+      caret.setAttribute('aria-expanded', String(!open));
+      caret.textContent = open ? '▸' : '▾';
+      list.hidden = open;
     });
   });
 </script>
