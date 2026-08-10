@@ -10,7 +10,62 @@ interface Props {
   latest: string;
 }
 
+interface MonthGroup {
+  month: string;
+  head: Version | null;
+  revs: Version[];
+  order: number;
+}
+
 const { versions, latest } = Astro.props;
+
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+/** "Jun '26 rev 12" → "Jun '26" */
+const monthOf = (label: string) => label.replace(/\s*rev\s*\d+\s*$/i, '').trim();
+
+/** "Jun '26 rev 12" → 12, "Jun '26" → -1 */
+const revOf = (label: string) => {
+  const m = label.match(/rev\s*(\d+)\s*$/i);
+  return m ? Number(m[1]) : -1;
+};
+
+/** "Jun '26" → sortable month index, or -1 when the label has another form */
+const monthOrder = (month: string) => {
+  const m = month.match(/^([A-Za-z]{3})[A-Za-z]*\s+'?(\d{2,4})/);
+  if (!m) return -1;
+  const idx = MONTHS.indexOf(m[1].toLowerCase());
+  if (idx < 0) return -1;
+  const year = Number(m[2]) < 100 ? Number(m[2]) + 2000 : Number(m[2]);
+  return year * 12 + idx;
+};
+
+// Group every version under its month, then sort newest to oldest.
+const byMonth = new Map<string, MonthGroup>();
+
+versions.forEach((v, i) => {
+  const month = monthOf(v.label);
+  let group = byMonth.get(month);
+  if (!group) {
+    group = { month, head: null, revs: [], order: i };
+    byMonth.set(month, group);
+  }
+  if (revOf(v.label) < 0 && !group.head) group.head = v;
+  else group.revs.push(v);
+});
+
+const groups = [...byMonth.values()];
+
+groups.sort((a, b) => {
+  const ka = monthOrder(a.month);
+  const kb = monthOrder(b.month);
+  if (ka !== kb && ka >= 0 && kb >= 0) return kb - ka;
+  return a.order - b.order;
+});
+
+groups.forEach((g) => g.revs.sort((a, b) => revOf(b.label) - revOf(a.label)));
+
+const urlOf = (v: Version) => `/resumes/${v.filename}${v.hash ? `?v=${v.hash}` : ''}`;
 ---
 
 <aside class="version-panel">
@@ -25,18 +80,46 @@ const { versions, latest } = Astro.props;
     </div>
   ) : (
     <ul class="version-list">
-      {versions.map((v, i) => (
-        <li
-          class={`version-item${v.filename === latest ? ' version-item--active' : ''}`}
-          data-url={`/resumes/${v.filename}${v.hash ? `?v=${v.hash}` : ''}`}
-          data-filename={v.filename}
-          role="button"
-          tabindex="0"
-          title={v.filename}
-        >
-          <span class="version-prefix">{i === 0 ? '▶' : ' '}</span>
-          <span class="version-label">{v.label}</span>
-          {i === 0 && <span class="version-badge">latest</span>}
+      {groups.map((group) => (
+        <li class="version-group">
+          {group.head ? (
+            <div
+              class={`version-item version-item--month${group.head.filename === latest ? ' version-item--active' : ''}`}
+              data-url={urlOf(group.head)}
+              data-filename={group.head.filename}
+              role="button"
+              tabindex="0"
+              title={group.head.filename}
+            >
+              <span class="version-prefix">{group.head.filename === latest ? '▶' : ' '}</span>
+              <span class="version-label">{group.month}</span>
+              {group.head.filename === latest && <span class="version-badge">latest</span>}
+            </div>
+          ) : (
+            <div class="version-item version-item--month version-item--static">
+              <span class="version-prefix"> </span>
+              <span class="version-label">{group.month}</span>
+            </div>
+          )}
+
+          {group.revs.length > 0 && (
+            <ul class="version-sublist">
+              {group.revs.map((v) => (
+                <li
+                  class={`version-item version-item--rev${v.filename === latest ? ' version-item--active' : ''}`}
+                  data-url={urlOf(v)}
+                  data-filename={v.filename}
+                  role="button"
+                  tabindex="0"
+                  title={v.filename}
+                >
+                  <span class="version-prefix">{v.filename === latest ? '▶' : ' '}</span>
+                  <span class="version-label">{revOf(v.label) >= 0 ? `rev ${revOf(v.label)}` : v.label}</span>
+                  {v.filename === latest && <span class="version-badge">latest</span>}
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>
@@ -101,6 +184,27 @@ const { versions, latest } = Astro.props;
   .version-list::-webkit-scrollbar-thumb { background: #3d3d3d; }
   .version-list::-webkit-scrollbar-thumb:hover { background: var(--primary, #98c379); }
 
+  .version-group { list-style: none; }
+
+  .version-sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  /* Connecting line that ties the revisions to their month */
+  .version-sublist::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 4px;
+    width: 1px;
+    background: var(--dimmer, #1e281e);
+    pointer-events: none;
+  }
+
   .version-item {
     display: flex;
     align-items: center;
@@ -132,6 +236,25 @@ const { versions, latest } = Astro.props;
     background: rgba(152, 195, 121, 0.05);
   }
 
+  /* Revisions sit indented below their month header */
+  .version-item--rev {
+    padding-left: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 0.72rem;
+  }
+
+  .version-item--static {
+    cursor: default;
+    color: var(--muted, #5a6a5a);
+  }
+
+  .version-item--static:hover {
+    background: transparent;
+    border-left-color: transparent;
+    color: var(--muted, #5a6a5a);
+  }
+
   .version-prefix {
     font-size: 0.62rem;
     width: 10px;
@@ -160,10 +283,12 @@ const { versions, latest } = Astro.props;
       // Update active state
       document.querySelectorAll('.version-item').forEach((el) => {
         el.classList.remove('version-item--active');
-        el.querySelector('.version-prefix').textContent = ' ';
+        const prefix = el.querySelector('.version-prefix');
+        if (prefix) prefix.textContent = ' ';
       });
       item.classList.add('version-item--active');
-      item.querySelector('.version-prefix').textContent = '▶';
+      const prefix = item.querySelector('.version-prefix');
+      if (prefix) prefix.textContent = '▶';
 
       // Update toolbar prompt
       const promptEl = document.querySelector('.prompt');

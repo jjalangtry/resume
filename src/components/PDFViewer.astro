@@ -11,20 +11,38 @@ const { pdfUrl } = Astro.props;
     <div class="toolbar-left">
       <span class="prompt">resume.pdf</span>
       <span class="toolbar-sep">|</span>
-      <button class="btn" id="btn-prev" title="Previous page (←)">&#9664;</button>
+      <button class="btn btn--icon" id="btn-prev" title="Previous page (←)" aria-label="Previous page">&#9664;</button>
       <span class="page-indicator">
         <span id="page-num">1</span>
         <span class="page-sep">/</span>
         <span id="page-count">—</span>
       </span>
-      <button class="btn" id="btn-next" title="Next page (→)">&#9654;</button>
+      <button class="btn btn--icon" id="btn-next" title="Next page (→)" aria-label="Next page">&#9654;</button>
     </div>
     <div class="toolbar-right">
-      <button class="btn" id="btn-zoom-out" title="Zoom out (-)">&#8722;</button>
+      <button class="btn btn--icon" id="btn-zoom-out" title="Zoom out (-)" aria-label="Zoom out">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="M20.5 20.5 16 16" /><path d="M8 11h6" />
+        </svg>
+      </button>
       <span class="zoom-display"><span id="zoom-pct">100</span>%</span>
-      <button class="btn" id="btn-zoom-in" title="Zoom in (+)">&#43;</button>
-      <button class="btn btn-fit" id="btn-fit" title="Fit to width">FIT</button>
-      <button class="btn btn-dl" id="btn-download" title="Download PDF">DL</button>
+      <button class="btn btn--icon" id="btn-zoom-in" title="Zoom in (+)" aria-label="Zoom in">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="M20.5 20.5 16 16" /><path d="M8 11h6" /><path d="M11 8v6" />
+        </svg>
+      </button>
+      <button class="btn btn--label btn-fit" id="btn-fit" title="Fit the page to the window">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9V4h5" /><path d="M20 9V4h-5" /><path d="M4 15v5h5" /><path d="M20 15v5h-5" />
+        </svg>
+        <span class="btn-text">fit page</span>
+      </button>
+      <button class="btn btn--label btn-dl" id="btn-download" title="Download the PDF">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v11" /><path d="m7.5 10 4.5 4.5 4.5-4.5" /><path d="M4 20h16" />
+        </svg>
+        <span class="btn-text">download pdf</span>
+      </button>
     </div>
   </div>
 
@@ -100,22 +118,48 @@ const { pdfUrl } = Astro.props;
   }
 
   .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     background: transparent;
     border: 1px solid var(--dim, #3a4a3a);
+    border-radius: 9999px;
     color: var(--primary, #98c379);
     font-family: inherit;
     font-size: 0.72rem;
-    padding: 2px 7px;
+    line-height: 1;
+    padding: 8px 16px;
     cursor: pointer;
     transition: background 0.12s, color 0.12s, border-color 0.12s;
     letter-spacing: 0.04em;
-    min-width: 24px;
   }
+
+  /* Compact round variant for the icon-only controls */
+  .btn--icon {
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+
+  .btn .icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .btn-text { white-space: nowrap; }
 
   .btn:hover {
     background: var(--primary, #98c379);
     color: #000;
     border-color: var(--primary, #98c379);
+  }
+
+  .btn:focus-visible {
+    outline: 1px dashed var(--primary, #98c379);
+    outline-offset: 2px;
   }
 
   .btn:disabled {
@@ -129,11 +173,10 @@ const { pdfUrl } = Astro.props;
     border-color: var(--dim, #3a4a3a);
   }
 
-  .btn-fit { font-size: 0.62rem; letter-spacing: 0.08em; }
+  .btn-fit { letter-spacing: 0.06em; }
 
   .btn-dl {
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     border-color: var(--info, #61afef);
     color: var(--info, #61afef);
   }
@@ -142,6 +185,8 @@ const { pdfUrl } = Astro.props;
     background: var(--info, #61afef);
     color: #000;
   }
+
+  .btn-dl:focus-visible { outline-color: var(--info, #61afef); }
 
   .page-indicator {
     display: flex;
